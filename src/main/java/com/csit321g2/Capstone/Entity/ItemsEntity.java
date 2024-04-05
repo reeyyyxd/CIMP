@@ -22,7 +22,7 @@ public class ItemsEntity {
 	private long iid;
 	
 	@Column(name = "issueOrderNumber")
-	private String issueOrder;
+	private int issueOrder;
 	
 	private String department;
 	
@@ -61,7 +61,7 @@ public class ItemsEntity {
 	public ItemsEntity() {
 	}
 
-	public ItemsEntity(String issueOrder, String department, String accPerson, String designation, String invoiceNumber,
+	public ItemsEntity(int issueOrder, String department, String accPerson, String designation, String invoiceNumber,
 			LocalDate invoiceDate, String supplier, int quantity, String unitOfMeasurement, String description,
 			float unitCost, float totalCost, LocationEntity location, String status, String lifespan, String remarks) {
 		this.issueOrder = issueOrder;
@@ -90,11 +90,11 @@ public class ItemsEntity {
 		this.iid = iid;
 	}
 
-	public String getIssueOrder() {
+	public int getIssueOrder() {
 		return issueOrder;
 	}
 
-	public void setIssueOrder(String issueOrder) {
+	public void setIssueOrder(int issueOrder) {
 		this.issueOrder = issueOrder;
 	}
 

@@ -1,8 +1,10 @@
 package com.csit321g2.Capstone.Controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +23,7 @@ import com.csit321g2.Capstone.Service.ItemsService;
 public class ItemsController {
 	
 	@Autowired
-	ItemsService sserv;
+	ItemsService iserv;
 	
 	@GetMapping("/print")
 	public String printHello() {
@@ -29,22 +31,22 @@ public class ItemsController {
 	}
 	
 	@PostMapping("/insertItem")
-	public ItemsEntity insertItem(@RequestBody ItemsEntity item) {
-		return sserv.insertItem(item);
+	public ItemsEntity insertItem(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestBody ItemsEntity item) {
+		return iserv.insertItem(date, item);
 	}
 	
 	@GetMapping("/getAllItems")
 	public List<ItemsEntity> getAllItems(){
-		return sserv.getAllItems();
+		return iserv.getAllItems();
 	}
 	
 	@PutMapping("/updateItem")
 	public ItemsEntity updateItem(@RequestParam int propertyTag, @RequestBody ItemsEntity newItemDetails) {
-		return sserv.updateItem(propertyTag, newItemDetails);
+		return iserv.updateItem(propertyTag, newItemDetails);
 	}
 	
 	@DeleteMapping("/deleteItem/{propertyTag}")
 	public String deleteItem(@PathVariable int propertyTag) {
-		return sserv.deleteItem(propertyTag);
+		return iserv.deleteItem(propertyTag);
 	}
 }

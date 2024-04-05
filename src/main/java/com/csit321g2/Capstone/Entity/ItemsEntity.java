@@ -1,9 +1,15 @@
 package com.csit321g2.Capstone.Entity;
 
+import java.time.LocalDate;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -12,70 +18,76 @@ public class ItemsEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int propertyTag;
+	@Column(name = "propertyTag")
+	private long iid;
 	
+	@Column(name = "issueOrderNumber")
 	private String issueOrder;
 	
 	private String department;
 	
-	private String accountablePerson;
+	@Column(name = "accountablePerson")
+	private String accPerson;
 	
 	private String designation;
 	
 	private String invoiceNumber;
 	
-	private int yearPurchased;
+	private LocalDate invoiceDate;
 	
 	private String supplier;
 	
 	private int quantity;
 	
-	private String uom;
+	@Column(name = "uom")
+	private String unitOfMeasurement;
 	
 	private String description;
 	
-	private int unitCost;
+	private float unitCost;
 	
-	private int totalCost;
+	private float totalCost;
 	
-	private String inventoryLocation;
-	
-	private String lifespan;
-	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "location_id", referencedColumnName = "lid")
+	private LocationEntity location;
+
 	private String status;
+
+	private String lifespan;
 	
 	private String remarks;
 
 	public ItemsEntity() {
-		super();
 	}
 
-	public ItemsEntity(int propertyTag, String issueOrder, String department, String accountablePerson,
-						 String designation, String invoiceNumber, int yearPurchased,String supplier, 
-						 int quantity, String uom, String description, int unitCost,
-						 int totalCost, String inventoryLocation, String lifespan, String status, String remarks) {
-		super();
-		this.propertyTag = propertyTag;
+	public ItemsEntity(String issueOrder, String department, String accPerson, String designation, String invoiceNumber,
+			LocalDate invoiceDate, String supplier, int quantity, String unitOfMeasurement, String description,
+			float unitCost, float totalCost, LocationEntity location, String status, String lifespan, String remarks) {
 		this.issueOrder = issueOrder;
 		this.department = department;
-		this.accountablePerson = accountablePerson;
+		this.accPerson = accPerson;
 		this.designation = designation;
 		this.invoiceNumber = invoiceNumber;
-		this.yearPurchased = yearPurchased;
+		this.invoiceDate = invoiceDate;
 		this.supplier = supplier;
+		this.quantity = quantity;
+		this.unitOfMeasurement = unitOfMeasurement;
+		this.description = description;
+		this.unitCost = unitCost;
 		this.totalCost = totalCost;
-		this.inventoryLocation = inventoryLocation;
-		this.lifespan = lifespan;
+		this.location = location;
 		this.status = status;
+		this.lifespan = lifespan;
 		this.remarks = remarks;
 	}
 
-	public int getPropertyTag() {
-		return propertyTag;
+	public long getIid() {
+		return iid;
 	}
 
-	public void setPropertyTag(int propertyTag) {
-		this.propertyTag = propertyTag;
+	public void setIid(long iid) {
+		this.iid = iid;
 	}
 
 	public String getIssueOrder() {
@@ -94,14 +106,14 @@ public class ItemsEntity {
 		this.department = department;
 	}
 
-	public String getAccountablePerson() {
-		return accountablePerson;
+	public String getAccPerson() {
+		return accPerson;
 	}
 
-	public void setAccountablePerson(String accountablePerson) {
-		this.accountablePerson = accountablePerson;
+	public void setAccPerson(String accPerson) {
+		this.accPerson = accPerson;
 	}
-	
+
 	public String getDesignation() {
 		return designation;
 	}
@@ -109,7 +121,7 @@ public class ItemsEntity {
 	public void setDesignation(String designation) {
 		this.designation = designation;
 	}
-	
+
 	public String getInvoiceNumber() {
 		return invoiceNumber;
 	}
@@ -117,15 +129,15 @@ public class ItemsEntity {
 	public void setInvoiceNumber(String invoiceNumber) {
 		this.invoiceNumber = invoiceNumber;
 	}
-	
-	public int getYearPurchased() {
-		return yearPurchased;
+
+	public LocalDate getInvoiceDate() {
+		return invoiceDate;
 	}
 
-	public void setYearPurchased(int yearPurchased) {
-		this.yearPurchased = yearPurchased;
+	public void setInvoiceDate(LocalDate invoiceDate) {
+		this.invoiceDate = invoiceDate;
 	}
-	
+
 	public String getSupplier() {
 		return supplier;
 	}
@@ -133,7 +145,7 @@ public class ItemsEntity {
 	public void setSupplier(String supplier) {
 		this.supplier = supplier;
 	}
-	
+
 	public int getQuantity() {
 		return quantity;
 	}
@@ -141,15 +153,15 @@ public class ItemsEntity {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	
-	public String getUom() {
-		return uom;
+
+	public String getUnitOfMeasurement() {
+		return unitOfMeasurement;
 	}
 
-	public void setUom(String uom) {
-		this.uom = uom;
+	public void setUnitOfMeasurement(String unitOfMeasurement) {
+		this.unitOfMeasurement = unitOfMeasurement;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
@@ -157,39 +169,31 @@ public class ItemsEntity {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	public int getUnitCost() {
+
+	public float getUnitCost() {
 		return unitCost;
 	}
 
-	public void setUnitCost(int unitCost) {
+	public void setUnitCost(float unitCost) {
 		this.unitCost = unitCost;
 	}
-	
-	public int getTotalCost() {
+
+	public float getTotalCost() {
 		return totalCost;
 	}
 
-	public void setTotalCost(int totalCost) {
+	public void setTotalCost(float totalCost) {
 		this.totalCost = totalCost;
 	}
-	
-	public String getInventoryLocation() {
-		return inventoryLocation;
+
+	public LocationEntity getLocation() {
+		return location;
 	}
 
-	public void setInventoryLocation(String inventoryLocation) {
-		this.inventoryLocation = inventoryLocation;
-	}
-	
-	public String getLifespan() {
-		return lifespan;
+	public void setLocation(LocationEntity location) {
+		this.location = location;
 	}
 
-	public void setLifespan(String lifespan) {
-		this.lifespan = lifespan;
-	}
-	
 	public String getStatus() {
 		return status;
 	}
@@ -197,7 +201,15 @@ public class ItemsEntity {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
+	public String getLifespan() {
+		return lifespan;
+	}
+
+	public void setLifespan(String lifespan) {
+		this.lifespan = lifespan;
+	}
+
 	public String getRemarks() {
 		return remarks;
 	}

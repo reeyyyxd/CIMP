@@ -1,4 +1,5 @@
 package com.csit321g2.Capstone.Service;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -12,14 +13,15 @@ import com.csit321g2.Capstone.Repository.ItemsRepository;
 public class ItemsService {
 	
 	@Autowired
-	ItemsRepository srepo;
+	ItemsRepository irepo;
 	
-	public ItemsEntity insertItem(ItemsEntity item) {
-		return srepo.save(item);
+	public ItemsEntity insertItem(LocalDate date, ItemsEntity item) {
+		item.setInvoiceDate(date);
+		return irepo.save(item);
 	}
 	
 	public List<ItemsEntity> getAllItems(){
-		return srepo.findAll();
+		return irepo.findAll();
 	}
 	
 	@SuppressWarnings("finally")
@@ -27,22 +29,22 @@ public class ItemsService {
 		ItemsEntity item = new ItemsEntity();
 		try {
 			//search id b4 update
-			item = srepo.findById(propertyTag).get();
+			item = irepo.findById(propertyTag).get();
 			
 			//update
 			item.setIssueOrder(newItemDetails.getIssueOrder());
 			item.setDepartment(newItemDetails.getDepartment());
-			item.setAccountablePerson(newItemDetails.getAccountablePerson());
+			item.setAccPerson(newItemDetails.getAccPerson());
 			item.setDesignation(newItemDetails.getDesignation());
 			item.setInvoiceNumber(newItemDetails.getInvoiceNumber());
-			item.setYearPurchased(newItemDetails.getYearPurchased());
+			item.setInvoiceDate(newItemDetails.getInvoiceDate());
 			item.setSupplier(newItemDetails.getSupplier());
 			item.setQuantity(newItemDetails.getQuantity());
-			item.setUom(newItemDetails.getUom());
+			item.setUnitOfMeasurement(newItemDetails.getUnitOfMeasurement());
 			item.setDescription(newItemDetails.getDescription());
 			item.setUnitCost(newItemDetails.getUnitCost());
 			item.setTotalCost(newItemDetails.getTotalCost());
-			item.setInventoryLocation(newItemDetails.getInventoryLocation());
+			item.setLocation(newItemDetails.getLocation());
 			item.setLifespan(newItemDetails.getLifespan());
 			item.setStatus(newItemDetails.getStatus());
 			item.setRemarks(newItemDetails.getRemarks());
@@ -50,15 +52,15 @@ public class ItemsService {
 		} catch (NoSuchElementException ex){
 			throw new NoSuchElementException("Item " + propertyTag + " does not exist!");
 		} finally {
-			return srepo.save(item);
+			return irepo.save(item);
 		}
 	}
 	
 	public String deleteItem(int propertyTag) {
 		String msg = "";
 		
-		if (srepo.findById(propertyTag) != null) {
-			srepo.deleteById(propertyTag);
+		if (irepo.findById(propertyTag) != null) {
+			irepo.deleteById(propertyTag);
 			msg = "Item " + propertyTag + " is successfully deleted!";
 		} else
 			msg = "Item " + propertyTag + " does not exist.";

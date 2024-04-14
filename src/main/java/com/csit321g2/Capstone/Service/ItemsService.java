@@ -1,5 +1,5 @@
 package com.csit321g2.Capstone.Service;
-import java.time.LocalDate;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -15,8 +15,7 @@ public class ItemsService {
 	@Autowired
 	ItemsRepository irepo;
 	
-	public ItemsEntity insertItem(LocalDate date, ItemsEntity item) {
-		item.setInvoiceDate(date);
+	public ItemsEntity insertItem(ItemsEntity item) {
 		return irepo.save(item);
 	}
 	

@@ -33,7 +33,7 @@ public class ItemsEntity {
 	
 	private String invoiceNumber;
 	
-	private LocalDate invoiceDate;
+	private int invoiceDate;
 	
 	private String supplier;
 	
@@ -62,7 +62,7 @@ public class ItemsEntity {
 	}
 
 	public ItemsEntity(int issueOrder, String department, String accPerson, String designation, String invoiceNumber,
-			LocalDate invoiceDate, String supplier, int quantity, String unitOfMeasurement, String description,
+			int invoiceDate, String supplier, int quantity, String unitOfMeasurement, String description,
 			float unitCost, float totalCost, LocationEntity location, String status, String lifespan, String remarks) {
 		this.issueOrder = issueOrder;
 		this.department = department;
@@ -130,11 +130,11 @@ public class ItemsEntity {
 		this.invoiceNumber = invoiceNumber;
 	}
 
-	public LocalDate getInvoiceDate() {
+	public int getInvoiceDate() {
 		return invoiceDate;
 	}
 
-	public void setInvoiceDate(LocalDate invoiceDate) {
+	public void setInvoiceDate(int invoiceDate) {
 		this.invoiceDate = invoiceDate;
 	}
 

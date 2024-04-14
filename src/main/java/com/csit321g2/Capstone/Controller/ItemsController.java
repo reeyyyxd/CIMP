@@ -1,10 +1,8 @@
 package com.csit321g2.Capstone.Controller;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,14 +23,9 @@ public class ItemsController {
 	@Autowired
 	ItemsService iserv;
 	
-	@GetMapping("/print")
-	public String printHello() {
-		return "Hello, Ellan Estandarte!";
-	}
-	
 	@PostMapping("/insertItem")
-	public ItemsEntity insertItem(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestBody ItemsEntity item) {
-		return iserv.insertItem(date, item);
+	public ItemsEntity insertItem(@RequestBody ItemsEntity item) {
+		return iserv.insertItem(item);
 	}
 	
 	@GetMapping("/getAllItems")

@@ -3,6 +3,7 @@ package com.csit321g2.Capstone.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import com.csit321g2.Capstone.Entity.ItemsEntity;
 import com.csit321g2.Capstone.Service.ItemsService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/item")
 public class ItemsController {
 	
@@ -34,12 +36,12 @@ public class ItemsController {
 	}
 	
 	@PutMapping("/updateItem")
-	public ItemsEntity updateItem(@RequestParam int propertyTag, @RequestBody ItemsEntity newItemDetails) {
+	public ItemsEntity updateItem(@RequestParam Long propertyTag, @RequestBody ItemsEntity newItemDetails) {
 		return iserv.updateItem(propertyTag, newItemDetails);
 	}
 	
 	@DeleteMapping("/deleteItem/{propertyTag}")
-	public String deleteItem(@PathVariable int propertyTag) {
+	public String deleteItem(@PathVariable Long propertyTag) {
 		return iserv.deleteItem(propertyTag);
 	}
 }

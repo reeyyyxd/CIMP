@@ -24,7 +24,7 @@ public class ItemsService {
 	}
 	
 	@SuppressWarnings("finally")
-	public ItemsEntity updateItem(int propertyTag, ItemsEntity newItemDetails) {
+	public ItemsEntity updateItem(Long propertyTag, ItemsEntity newItemDetails) {
 		ItemsEntity item = new ItemsEntity();
 		try {
 			//search id b4 update

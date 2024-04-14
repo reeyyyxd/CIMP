@@ -1,7 +1,5 @@
 package com.csit321g2.Capstone.Entity;
 
-import java.time.LocalDate;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,7 +40,9 @@ public class ItemsEntity {
 	@Column(name = "uom")
 	private String unitOfMeasurement;
 	
-	private String description;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "desc_id", referencedColumnName = "did")
+	private DescriptionEntity description;
 	
 	private float unitCost;
 	
@@ -62,7 +62,7 @@ public class ItemsEntity {
 	}
 
 	public ItemsEntity(int issueOrder, String department, String accPerson, String designation, String invoiceNumber,
-			int invoiceDate, String supplier, int quantity, String unitOfMeasurement, String description,
+			int invoiceDate, String supplier, int quantity, String unitOfMeasurement, DescriptionEntity description,
 			float unitCost, float totalCost, LocationEntity location, String status, String lifespan, String remarks) {
 		this.issueOrder = issueOrder;
 		this.department = department;
@@ -162,11 +162,11 @@ public class ItemsEntity {
 		this.unitOfMeasurement = unitOfMeasurement;
 	}
 
-	public String getDescription() {
+	public DescriptionEntity getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(DescriptionEntity description) {
 		this.description = description;
 	}
 

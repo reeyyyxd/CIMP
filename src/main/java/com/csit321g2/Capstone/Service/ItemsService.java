@@ -55,7 +55,7 @@ public class ItemsService {
 		}
 	}
 	
-	public String deleteItem(int propertyTag) {
+	public String deleteItem(Long propertyTag) {
 		String msg = "";
 		
 		if (irepo.findById(propertyTag) != null) {

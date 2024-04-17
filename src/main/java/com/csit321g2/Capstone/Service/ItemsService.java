@@ -65,4 +65,20 @@ public class ItemsService {
 			msg = "Item " + propertyTag + " does not exist.";
 		return msg;
 	}	
+
+	public List<ItemsEntity> fetchFilter(String acc_per,
+	String department,
+    String designation,
+    String status,
+    String uom,
+    String supplier,
+    String building,
+    String room,
+	String name,
+    String model,
+    String type,
+	String invoice_date,
+	String lifespan) {
+		return irepo.fetchFilter(acc_per,department,designation,status,uom,supplier,building,room,name,model,type,invoice_date,lifespan);
+	}
 }

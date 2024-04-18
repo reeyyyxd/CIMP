@@ -15,6 +15,46 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
     //@Query(value="SELECT s FROM AccountEntity s WHERE firstname LIKE %:fname% AND lastname LIKE %:lname%")
 	//public List<AccountEntity> fetchAllCustom(@Param("fname")String fname,@Param("lname")String lname);
 
+
+    @Query(value="SELECT i.accPerson FROM ItemsEntity i")
+    public List<String> fetchAccPer();
+
+    @Query(value="SELECT i.department FROM ItemsEntity i")
+    public List<String> fetchDep();
+
+    @Query("SELECT i.designation FROM ItemsEntity i")
+    public List<String> fetchDesig();
+
+    @Query(value="SELECT i.status FROM ItemsEntity i")
+    public List<String> fetchStatus();
+
+    @Query(value="SELECT i.unitOfMeasurement FROM ItemsEntity i")
+    public List<String> fetchUom();
+
+    @Query("SELECT i.supplier FROM ItemsEntity i")
+    public List<String> fetchSupp();
+
+    @Query(value="SELECT l.building FROM LocationEntity l")
+    public List<String> fetchBuilding();
+
+    @Query(value="SELECT l.room FROM LocationEntity l")
+    public List<String> fetchRoom();
+
+    @Query("SELECT d.name FROM DescriptionEntity d")
+    public List<String> fetchName();
+
+    @Query(value="SELECT d.model FROM DescriptionEntity d")
+    public List<String> fetchModel();
+
+    @Query(value="SELECT d.type FROM DescriptionEntity d")
+    public List<String> fetchType();
+
+    @Query("SELECT i.invoiceDate FROM ItemsEntity i")
+    public List<String> fetchInvoiceDate();
+
+    @Query("SELECT i.lifespan FROM ItemsEntity i")
+    public List<String> fetchLifespan();
+
     @Query(value="SELECT i,l,d FROM ItemsEntity i , LocationEntity l, DescriptionEntity d " +
     "WHERE i.location.lid = l.lid AND i.description.did = d.did " +
     "AND i.accPerson LIKE %:acc_per% " +

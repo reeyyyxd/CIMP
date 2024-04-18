@@ -45,7 +45,73 @@ public class ItemsController {
 		return iserv.deleteItem(propertyTag);
 	}
 	
-	@GetMapping("filter")
+	@GetMapping("/accPer")
+	public List<String> fetchAccPer() {
+		return iserv.fetchAccPer();
+	}
+
+	@GetMapping("/dep")
+	public List<String> fetchDep() {
+		return iserv.fetchDep();
+	}
+	
+	@GetMapping("/des")
+	public List<String> fetchDesig() {
+		return iserv.fetchDesig();
+	}
+
+	@GetMapping("/status")
+	public List<String> fetchStatus() {
+		return iserv.fetchStatus();
+	}
+
+	@GetMapping("/uom")
+	public List<String> fetchUom() {
+		return iserv.fetchUom();
+	}
+	
+	@GetMapping("/supplier")
+	public List<String> fetchSupp() {
+		return iserv.fetchSupp();
+	}
+
+	@GetMapping("/building")
+	public List<String> fetchBuilding() {
+		return iserv.fetchBuilding();
+	}
+
+	@GetMapping("/room")
+	public List<String> fetchRoom() {
+		return iserv.fetchRoom();
+	}
+	
+	@GetMapping("/name")
+	public List<String> fetchName() {
+		return iserv.fetchName();
+	}
+
+	@GetMapping("/model")
+	public List<String> fetchModel() {
+		return iserv.fetchModel();
+	}
+
+	@GetMapping("/type")
+	public List<String> fetchType() {
+		return iserv.fetchType();
+	}
+	
+	@GetMapping("/invoice")
+	public List<String> fetchInvoiceDate() {
+		return iserv.fetchInvoiceDate();
+	}
+
+	@GetMapping("/lifespan")
+	public List<String> fetchLifespan() {
+		return iserv.fetchLifespan();
+	}
+	
+
+	@GetMapping("/filter")
 	public List<ItemsEntity> fetchFilter(@RequestParam String acc_per, 
 	@RequestParam String department,
     @RequestParam String designation,

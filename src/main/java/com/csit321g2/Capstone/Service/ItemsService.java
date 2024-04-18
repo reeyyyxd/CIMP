@@ -66,6 +66,59 @@ public class ItemsService {
 		return msg;
 	}	
 
+
+	public List<String>fetchAccPer(){
+		return irepo.fetchAccPer();
+	}
+
+	public List<String>fetchDep(){
+		return irepo.fetchDep();
+	}
+
+	public List<String>fetchDesig(){
+		return irepo.fetchDesig();
+	}
+
+	public List<String>fetchStatus(){
+		return irepo.fetchStatus();
+	}
+
+	public List<String>fetchUom(){
+		return irepo.fetchUom();
+	}
+
+	public List<String>fetchSupp(){
+		return irepo.fetchSupp();
+	}
+
+	public List<String>fetchBuilding(){
+		return irepo.fetchBuilding();
+	}
+
+	public List<String>fetchRoom(){
+		return irepo.fetchRoom();
+	}
+
+	public List<String>fetchName(){
+		return irepo.fetchName();
+	}
+
+	public List<String>fetchModel(){
+		return irepo.fetchModel();
+	}
+
+	public List<String>fetchType(){
+		return irepo.fetchType();
+	}
+
+	public List<String>fetchInvoiceDate(){
+		return irepo.fetchInvoiceDate();
+	}
+
+	public List<String>fetchLifespan(){
+		return irepo.fetchLifespan();
+	}
+
 	public List<ItemsEntity> fetchFilter(String acc_per,
 	String department,
     String designation,

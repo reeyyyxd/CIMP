@@ -119,6 +119,10 @@ public class ItemsService {
 		return irepo.fetchLifespan();
 	}
 
+	public ItemsEntity fetchSearch(String search){
+		return irepo.fetchSearch(search);
+	}
+
 	public List<ItemsEntity> fetchFilter(String acc_per,
 	String department,
     String designation,

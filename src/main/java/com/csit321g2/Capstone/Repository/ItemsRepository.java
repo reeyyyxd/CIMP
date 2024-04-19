@@ -22,7 +22,7 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
     @Query(value="SELECT i.department FROM ItemsEntity i")
     public List<String> fetchDep();
 
-    @Query("SELECT i.designation FROM ItemsEntity i")
+    @Query(value="SELECT i.designation FROM ItemsEntity i")
     public List<String> fetchDesig();
 
     @Query(value="SELECT i.status FROM ItemsEntity i")
@@ -31,7 +31,7 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
     @Query(value="SELECT i.unitOfMeasurement FROM ItemsEntity i")
     public List<String> fetchUom();
 
-    @Query("SELECT i.supplier FROM ItemsEntity i")
+    @Query(value="SELECT i.supplier FROM ItemsEntity i")
     public List<String> fetchSupp();
 
     @Query(value="SELECT l.building FROM LocationEntity l")
@@ -40,7 +40,7 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
     @Query(value="SELECT l.room FROM LocationEntity l")
     public List<String> fetchRoom();
 
-    @Query("SELECT d.name FROM DescriptionEntity d")
+    @Query(value="SELECT d.name FROM DescriptionEntity d")
     public List<String> fetchName();
 
     @Query(value="SELECT d.model FROM DescriptionEntity d")
@@ -49,15 +49,23 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
     @Query(value="SELECT d.type FROM DescriptionEntity d")
     public List<String> fetchType();
 
-    @Query("SELECT i.invoiceDate FROM ItemsEntity i")
+    @Query(value="SELECT i.invoiceDate FROM ItemsEntity i")
     public List<String> fetchInvoiceDate();
 
-    @Query("SELECT i.lifespan FROM ItemsEntity i")
+    @Query(value="SELECT i.lifespan FROM ItemsEntity i")
     public List<String> fetchLifespan();
 
     @Query(value="SELECT i,l,d FROM ItemsEntity i , LocationEntity l, DescriptionEntity d " +
     "WHERE i.location.lid = l.lid AND i.description.did = d.did " +
-    "AND i.accPerson LIKE %:acc_per% " +
+    "AND (CAST(i.iid AS STRING) = :search " +  
+    "OR CAST(i.invoiceNumber AS STRING) = :search " +
+    "OR CAST(i.issueOrder AS STRING) = :search " +
+    "OR d.serialNumber = :search)")
+    public ItemsEntity fetchSearch(@Param("search") String search);
+
+    @Query(value="SELECT i,l,d FROM ItemsEntity i , LocationEntity l, DescriptionEntity d " +
+    "WHERE i.location.lid = l.lid AND i.description.did = d.did " +
+    "AND (i.accPerson LIKE %:acc_per% " +
     "AND i.department LIKE %:department% " +
     "AND i.designation LIKE %:designation% " +
     "AND i.status LIKE %:status% " +
@@ -69,7 +77,7 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
     "AND d.model LIKE %:model% " +
     "AND d.type LIKE %:type% " +
     "AND CAST(i.invoiceDate AS STRING) LIKE %:invoice_date% " +
-    "AND CAST(i.lifespan AS STRING) LIKE %:lifespan% ")
+    "AND CAST(i.lifespan AS STRING) LIKE %:lifespan% )")
     public List<ItemsEntity> fetchFilter(@Param("acc_per")String acc_per,
     @Param("department")String department,
     @Param("designation")String designation,

@@ -110,6 +110,11 @@ public class ItemsController {
 		return iserv.fetchLifespan();
 	}
 	
+	@GetMapping("search")
+	public ItemsEntity fetchSearch(@RequestParam String search) {
+		return iserv.fetchSearch(search);
+	}
+	
 
 	@GetMapping("/filter")
 	public List<ItemsEntity> fetchFilter(@RequestParam String acc_per, 

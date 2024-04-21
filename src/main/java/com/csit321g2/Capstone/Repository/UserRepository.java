@@ -7,5 +7,5 @@ import com.csit321g2.Capstone.Entity.UserEntity;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    
+    UserEntity findByUsername(String username);
 }

@@ -95,4 +95,14 @@ public class UserEntity {
         this.isDeleted = isDeleted;
     }
 
+    public static String deleteUsers(int aid) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteUsers'");
+    }
+
+    public static UserEntity updateUser(int aid, UserEntity newAdminDetails) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateUser'");
+    }
+
 }

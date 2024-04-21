@@ -132,5 +132,22 @@ public class ItemsController {
 	@RequestParam String lifespan) {
 		return iserv.fetchFilter(acc_per,department,designation,status,uom,supplier,building,room,name,model,type,invoice_date,lifespan);
 	}
+
+	@GetMapping("/sum")
+	public long fetchSum(@RequestParam String acc_per, 
+	@RequestParam String department,
+    @RequestParam String designation,
+    @RequestParam String status,
+    @RequestParam String uom,
+    @RequestParam String supplier,
+    @RequestParam String building,
+    @RequestParam String room,
+    @RequestParam String name,
+    @RequestParam String model,
+    @RequestParam String type,
+	@RequestParam String invoice_date,
+	@RequestParam String lifespan) {
+		return iserv.fetchSum(acc_per,department,designation,status,uom,supplier,building,room,name,model,type,invoice_date,lifespan);
+	}
 	
 }

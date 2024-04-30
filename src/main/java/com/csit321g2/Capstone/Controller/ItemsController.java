@@ -111,8 +111,13 @@ public class ItemsController {
 	}
 	
 	@GetMapping("search")
-	public ItemsEntity fetchSearch(@RequestParam String search) {
+	public List<ItemsEntity> fetchSearch(@RequestParam String search) {
 		return iserv.fetchSearch(search);
+	}
+
+	@GetMapping("fullInfo")
+	public ItemsEntity fetchFullInfo(@RequestParam String info) {
+		return iserv.fetchFullInfo(info);
 	}
 	
 

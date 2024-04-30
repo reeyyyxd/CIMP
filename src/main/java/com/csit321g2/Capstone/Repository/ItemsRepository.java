@@ -57,11 +57,16 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
 
     @Query(value="SELECT i,l,d FROM ItemsEntity i , LocationEntity l, DescriptionEntity d " +
     "WHERE i.location.lid = l.lid AND i.description.did = d.did " +
-    "AND (CAST(i.iid AS STRING) = :search " +  
-    "OR CAST(i.invoiceNumber AS STRING) = :search " +
-    "OR CAST(i.issueOrder AS STRING) = :search " +
-    "OR d.serialNumber = :search)")
-    public ItemsEntity fetchSearch(@Param("search") String search);
+    "AND (CAST(i.iid AS STRING) LIKE %:search% " +  
+    "OR CAST(i.invoiceNumber AS STRING) LIKE %:search% " +
+    "OR CAST(i.issueOrder AS STRING) LIKE %:search% " +
+    "OR d.serialNumber LIKE %:search%)")
+    public List<ItemsEntity> fetchSearch(@Param("search") String search);
+
+    @Query(value="SELECT i,l,d FROM ItemsEntity i , LocationEntity l, DescriptionEntity d " +
+    "WHERE i.location.lid = l.lid AND i.description.did = d.did " +
+    "AND (CAST(i.iid AS STRING) = %:info%)")
+    public ItemsEntity fetchFullInfo(@Param("info") String info);
 
     @Query(value="SELECT i,l,d FROM ItemsEntity i , LocationEntity l, DescriptionEntity d " +
     "WHERE i.location.lid = l.lid AND i.description.did = d.did " +

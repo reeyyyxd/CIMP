@@ -47,7 +47,7 @@ public class ItemsEntity {
 	private float unitCost;
 	
 	private float totalCost;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "location_id", referencedColumnName = "lid")
 	private LocationEntity location;
@@ -218,4 +218,5 @@ public class ItemsEntity {
 		this.remarks = remarks;
 	}
 
+	
 }

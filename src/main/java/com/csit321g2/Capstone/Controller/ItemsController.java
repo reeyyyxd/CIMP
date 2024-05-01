@@ -40,7 +40,6 @@ public class ItemsController {
 		return iserv.updateItem(propertyTag, newItemDetails);
 	}
 	
-	
 	@DeleteMapping("/deleteItem/{propertyTag}")
 	public String deleteItem(@PathVariable Long propertyTag) {
 		return iserv.deleteItem(propertyTag);
@@ -119,6 +118,16 @@ public class ItemsController {
 	@GetMapping("fullInfo")
 	public ItemsEntity fetchFullInfo(@RequestParam String info) {
 		return iserv.fetchFullInfo(info);
+	}
+
+	@PutMapping("requestItem")
+	public int requestItem(@RequestBody int number, @RequestBody long itemId) {
+		return number;
+	}
+
+	@PutMapping("updateStat")
+	public int updateStatus(@RequestParam String stat, @RequestParam int statId) {
+		return statId;
 	}
 	
 

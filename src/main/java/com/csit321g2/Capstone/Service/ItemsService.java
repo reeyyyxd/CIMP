@@ -22,6 +22,8 @@ public class ItemsService {
 	public List<ItemsEntity> getAllItems(){
 		return irepo.findAll();
 	}
+
+
 	
 	@SuppressWarnings("finally")
 	public ItemsEntity updateItem(Long propertyTag, ItemsEntity newItemDetails) {
@@ -127,6 +129,18 @@ public class ItemsService {
 	public ItemsEntity fetchFullInfo(String info){
 		return irepo.fetchFullInfo(info);
 	}
+
+	public int requestItem(int number, long itemId){
+		return (number);
+	}
+	
+
+	public int updateStatus(String stat, int statId){
+		return (statId);
+	}
+
+	
+
 
 	public List<ItemsEntity> fetchFilter(String acc_per,
 	String department,

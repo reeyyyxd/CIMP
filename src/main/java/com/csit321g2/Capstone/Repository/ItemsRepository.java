@@ -3,11 +3,13 @@ package com.csit321g2.Capstone.Repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.csit321g2.Capstone.Entity.ItemsEntity;
+
 
 @Repository
 public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
@@ -54,6 +56,20 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
 
     @Query(value="SELECT i.lifespan FROM ItemsEntity i")
     public List<String> fetchLifespan();
+    
+      
+    @Query(value="UPDATE ItemsEntity i \n " + 
+                "SET i.quantity = i.quantity - :number, " + 
+                "i.totalCost = i.unitCost * (i.quantity - :number) \n " +
+                "WHERE i.iid = :itemId")
+    @Modifying
+    public int requestItem(@Param("number") int number, @Param("itemId") long itemId);
+
+
+    @Query(value = "UPDATE ItemsEntity SET status = :stat WHERE iid = :statId")
+    @Modifying
+    public int updateStatus(@Param("stat")String stat, @Param("statId") int statId);
+
 
     @Query(value="SELECT i,l,d FROM ItemsEntity i , LocationEntity l, DescriptionEntity d " +
     "WHERE i.location.lid = l.lid AND i.description.did = d.did " +

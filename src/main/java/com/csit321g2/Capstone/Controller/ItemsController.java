@@ -35,10 +35,11 @@ public class ItemsController {
 		return iserv.getAllItems();
 	}
 	
-	@PutMapping("/updateItem")
-	public ItemsEntity updateItem(@RequestParam Long propertyTag, @RequestBody ItemsEntity newItemDetails) {
+	@PutMapping("/updateItem/{propertyTag}")
+	public ItemsEntity updateItem(@PathVariable Long propertyTag, @RequestBody ItemsEntity newItemDetails) {
 		return iserv.updateItem(propertyTag, newItemDetails);
 	}
+	
 	
 	@DeleteMapping("/deleteItem/{propertyTag}")
 	public String deleteItem(@PathVariable Long propertyTag) {

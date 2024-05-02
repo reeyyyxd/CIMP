@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.csit321g2.Capstone.Entity.ItemsEntity;
+import com.csit321g2.Capstone.Entity.LogEntity;
 import com.csit321g2.Capstone.Service.ItemsService;
 
 @RestController
@@ -128,6 +129,12 @@ public class ItemsController {
 	@PutMapping("updateStat")
 	public int updateStatus(@RequestParam String stat, @RequestParam int statId) {
 		return statId;
+	}
+
+	@GetMapping("/searchLogs")
+	public List<LogEntity> searchLogs(@RequestParam String month,@RequestParam String year,@RequestParam String day,
+	@RequestParam String type/*,@RequestParam String bef, @RequestParam String aft*/){
+		return iserv.searchLogs(month, year, day, type/* , bef, aft*/);
 	}
 	
 

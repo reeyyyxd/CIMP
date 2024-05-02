@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.csit321g2.Capstone.Entity.ItemsEntity;
+import com.csit321g2.Capstone.Entity.LogEntity;
 import com.csit321g2.Capstone.Repository.ItemsRepository;
 
 @Service
@@ -139,7 +140,9 @@ public class ItemsService {
 		return (statId);
 	}
 
-	
+	public List<LogEntity> searchLogs(String month, String year, String day, String type/* ,String bef, String aft*/){
+		return irepo.searchLogs(month,year,day,type/* ,bef,aft*/);
+	}
 
 
 	public List<ItemsEntity> fetchFilter(String acc_per,

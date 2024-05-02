@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.csit321g2.Capstone.Entity.ItemsEntity;
+import com.csit321g2.Capstone.Entity.LogEntity;
 
 
 @Repository
@@ -69,6 +70,27 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
     @Query(value = "UPDATE ItemsEntity SET status = :stat WHERE iid = :statId")
     @Modifying
     public int updateStatus(@Param("stat")String stat, @Param("statId") int statId);
+
+
+    
+
+    @Query("SELECT l FROM LogEntity l WHERE " +
+        "CAST(FUNCTION('MONTH', l.date) AS string) LIKE %:month% " +
+        "AND CAST(FUNCTION('YEAR', l.date) AS string) LIKE %:year% " +
+        "AND CAST(FUNCTION('DAY', l.date) AS string) LIKE %:day% " +
+        "AND l.type LIKE %:type% ")
+        //"AND FUNCTION('FORMAT', l.time, 'HH:mm:ss') BETWEEN %:bef% AND %:aft%")
+List<LogEntity> searchLogs(
+        @Param("month") String month,
+        @Param("year") String year,
+        @Param("day") String day,
+        @Param("type") String type
+        /*@Param("bef") String bef,
+        @Param("aft") String aft*/);
+
+
+    
+
 
 
     @Query(value="SELECT i,l,d FROM ItemsEntity i , LocationEntity l, DescriptionEntity d " +

@@ -57,6 +57,13 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
 
     @Query(value="SELECT i.lifespan FROM ItemsEntity i")
     public List<String> fetchLifespan();
+
+    @Query(value="SELECT l.type FROM LogEntity l")
+    public List<String> fetchLogsType();
+
+    @Query(value="SELECT CAST(FUNCTION('YEAR', l.date) AS String) FROM LogEntity l ORDER BY l.date ASC")
+    public List<String> fetchLogsYear();
+
     
       
     @Query(value="UPDATE ItemsEntity i \n " + 
@@ -75,22 +82,54 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
     
 
     @Query("SELECT l FROM LogEntity l WHERE " +
-        "CAST(FUNCTION('MONTH', l.date) AS string) LIKE %:month% " +
-        "AND CAST(FUNCTION('YEAR', l.date) AS string) LIKE %:year% " +
-        "AND CAST(FUNCTION('DAY', l.date) AS string) LIKE %:day% " +
-        "AND l.type LIKE %:type% ")
-        //"AND FUNCTION('FORMAT', l.time, 'HH:mm:ss') BETWEEN %:bef% AND %:aft%")
-List<LogEntity> searchLogs(
+        "CAST(FUNCTION('MONTHNAME', l.date) AS string) LIKE %:month " +
+        "AND CAST(FUNCTION('YEAR', l.date) AS string) LIKE %:year " +
+        "AND CASE " +
+            "    WHEN DAY(l.date) = 1 THEN '1' " +
+            "    WHEN DAY(l.date) = 2 THEN '2' " +
+            "    WHEN DAY(l.date) = 3 THEN '3' " +
+            "    WHEN DAY(l.date) = 4 THEN '4' " +
+            "    WHEN DAY(l.date) = 5 THEN '5' " +
+            "    WHEN DAY(l.date) = 6 THEN '6' " +
+            "    WHEN DAY(l.date) = 7 THEN '7' " +
+            "    WHEN DAY(l.date) = 8 THEN '8' " +
+            "    WHEN DAY(l.date) = 9 THEN '9' " +
+            "    WHEN DAY(l.date) = 10 THEN '10' " +
+            "    WHEN DAY(l.date) = 11 THEN 'eleven' " +
+            "    WHEN DAY(l.date) = 12 THEN 'twelve' " +
+            "    WHEN DAY(l.date) = 13 THEN 'thirteen' " +
+            "    WHEN DAY(l.date) = 14 THEN 'fourteen' " +
+            "    WHEN DAY(l.date) = 15 THEN 'fifteen' " +
+            "    WHEN DAY(l.date) = 16 THEN 'sixteen' " +
+            "    WHEN DAY(l.date) = 17 THEN 'seventeen' " +
+            "    WHEN DAY(l.date) = 18 THEN 'eighteen' " +
+            "    WHEN DAY(l.date) = 19 THEN 'nineteen' " +
+            "    WHEN DAY(l.date) = 20 THEN 'twenties' " +
+            "    WHEN DAY(l.date) = 21 THEN 'twenty one' " +
+            "    WHEN DAY(l.date) = 22 THEN 'twenty two' " +
+            "    WHEN DAY(l.date) = 23 THEN 'twenty three' " +
+            "    WHEN DAY(l.date) = 24 THEN 'twenty four' " +
+            "    WHEN DAY(l.date) = 25 THEN 'twenty five' " +
+            "    WHEN DAY(l.date) = 26 THEN 'twenty six' " +
+            "    WHEN DAY(l.date) = 27 THEN 'twenty seven' " +
+            "    WHEN DAY(l.date) = 28 THEN 'twenty eight' " +
+            "    WHEN DAY(l.date) = 29 THEN 'twenty nine' " +
+            "    WHEN DAY(l.date) = 30 THEN 'thirties' " +
+            "    WHEN DAY(l.date) = 31 THEN 'thirty one' " +
+            "    ELSE 'unknown' " +
+            "END LIKE  :day% " +
+        "AND l.type LIKE %:type% " +
+        "OR CAST(l.time AS STRING) > %:bef% AND CAST(l.time AS STRING) < %:aft%")
+    List<LogEntity> searchLogs(
         @Param("month") String month,
         @Param("year") String year,
         @Param("day") String day,
-        @Param("type") String type
-        /*@Param("bef") String bef,
-        @Param("aft") String aft*/);
+        @Param("type") String type,
+        @Param("bef") String bef,
+        @Param("aft") String aft);
 
 
     
-
 
 
     @Query(value="SELECT i,l,d FROM ItemsEntity i , LocationEntity l, DescriptionEntity d " +

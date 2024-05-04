@@ -123,6 +123,14 @@ public class ItemsService {
 		return irepo.fetchLifespan();
 	}
 
+	public List<String>fetchLogsType(){
+		return irepo.fetchLogsType();
+	}
+
+	public List<String>fetchLogsYear(){
+		return irepo.fetchLogsYear();
+	}
+
 	public List<ItemsEntity> fetchSearch(String search){
 		return irepo.fetchSearch(search);
 	}
@@ -140,8 +148,8 @@ public class ItemsService {
 		return (statId);
 	}
 
-	public List<LogEntity> searchLogs(String month, String year, String day, String type/* ,String bef, String aft*/){
-		return irepo.searchLogs(month,year,day,type/* ,bef,aft*/);
+	public List<LogEntity> searchLogs(String month, String year, String day, String type ,String bef, String aft){
+		return irepo.searchLogs(month,year,day,type ,bef,aft);
 	}
 
 

@@ -110,7 +110,17 @@ public class ItemsController {
 	public List<String> fetchLifespan() {
 		return iserv.fetchLifespan();
 	}
-	
+
+	@GetMapping("/logstype")
+	public List<String> fetchLogsType() {
+		return iserv.fetchLogsType();
+	}
+
+	@GetMapping("/logsyear")
+	public List<String> fetchLogsYear() {
+		return iserv.fetchLogsYear();
+	}
+
 	@GetMapping("search")
 	public List<ItemsEntity> fetchSearch(@RequestParam String search) {
 		return iserv.fetchSearch(search);
@@ -133,8 +143,8 @@ public class ItemsController {
 
 	@GetMapping("/searchLogs")
 	public List<LogEntity> searchLogs(@RequestParam String month,@RequestParam String year,@RequestParam String day,
-	@RequestParam String type/*,@RequestParam String bef, @RequestParam String aft*/){
-		return iserv.searchLogs(month, year, day, type/* , bef, aft*/);
+	@RequestParam String type,@RequestParam String bef, @RequestParam String aft){
+		return iserv.searchLogs(month, year, day, type , bef, aft);
 	}
 	
 

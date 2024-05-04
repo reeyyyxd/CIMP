@@ -118,15 +118,15 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
             "    WHEN DAY(l.date) = 31 THEN 'thirty one' " +
             "    ELSE 'unknown' " +
             "END LIKE  :day% " +
-        "AND l.type LIKE %:type% " +
-        "OR CAST(l.time AS STRING) > %:bef% AND CAST(l.time AS STRING) < %:aft%")
+        "AND l.type LIKE %:type% ") 
+        /* "AND (CAST(l.time AS STRING) > %:bef% AND CAST(l.time AS STRING) < %:aft%)")*/
     List<LogEntity> searchLogs(
         @Param("month") String month,
         @Param("year") String year,
         @Param("day") String day,
-        @Param("type") String type,
+        @Param("type") String type/* ,
         @Param("bef") String bef,
-        @Param("aft") String aft);
+        @Param("aft") String aft*/);
 
 
     

@@ -143,8 +143,8 @@ public class ItemsController {
 
 	@GetMapping("/searchLogs")
 	public List<LogEntity> searchLogs(@RequestParam String month,@RequestParam String year,@RequestParam String day,
-	@RequestParam String type,@RequestParam String bef, @RequestParam String aft){
-		return iserv.searchLogs(month, year, day, type , bef, aft);
+	@RequestParam String type/*,@RequestParam String bef, @RequestParam String aft*/){
+		return iserv.searchLogs(month, year, day, type/* , bef, aft*/);
 	}
 	
 

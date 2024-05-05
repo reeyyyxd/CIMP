@@ -78,7 +78,8 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
     @Modifying
     public int updateStatus(@Param("stat")String stat, @Param("statId") int statId);
 
-
+    @Query(value="SELECT l FROM LogEntity l WHERE CAST(l.item.iid AS STRING) LIKE %:num%")
+    public List<LogEntity> logsSpeci(@Param("num") String num);
     
 
     @Query("SELECT l FROM LogEntity l WHERE " +

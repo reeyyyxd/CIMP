@@ -148,6 +148,10 @@ public class ItemsService {
 		return (statId);
 	}
 
+	public List<LogEntity> logsSpeci(String num){
+		return irepo.logsSpeci(num);
+	}
+
 	public List<LogEntity> searchLogs(String month, String year, String day, String type ,String bef, String aft){
 		return irepo.searchLogs(month,year,day,type ,bef,aft);
 	}

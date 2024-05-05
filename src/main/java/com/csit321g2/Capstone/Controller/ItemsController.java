@@ -140,6 +140,12 @@ public class ItemsController {
 	public int updateStatus(@RequestParam String stat, @RequestParam int statId) {
 		return statId;
 	}
+	
+	@GetMapping("/logsSpeci")
+	public List<LogEntity> logsSpeci(@RequestParam String num) {
+		return iserv.logsSpeci(num);
+	}
+	
 
 	@GetMapping("/searchLogs")
 	public List<LogEntity> searchLogs(@RequestParam String month,@RequestParam String year,@RequestParam String day,

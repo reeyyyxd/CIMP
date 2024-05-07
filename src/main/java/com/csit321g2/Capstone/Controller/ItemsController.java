@@ -131,13 +131,13 @@ public class ItemsController {
 		return iserv.fetchFullInfo(info);
 	}
 
-	@PutMapping("/requestItem/{itemId}")
-	public ItemsEntity requestItem(@RequestParam int number, @PathVariable long itemId) {
+	@PutMapping("/requestItem")
+	public ItemsEntity requestItem(@RequestParam int number, @RequestParam long itemId) {
 		return iserv.requestItem(number,itemId);
 	}
 
-	@PutMapping("/updateStatus/{iid}")
-	public ItemsEntity updateStatus(@PathVariable Long iid, @RequestParam String status) {
+	@PutMapping("/updateStatus")
+	public ItemsEntity updateStatus(@RequestParam Long iid, @RequestParam String status) {
 		return iserv.updateStatus(iid, status);
 	}
 	

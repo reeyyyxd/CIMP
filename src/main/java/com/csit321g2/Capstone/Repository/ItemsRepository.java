@@ -66,10 +66,7 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
 
     
       
-    @Query(value="UPDATE ItemsEntity i \n " + 
-                "SET i.quantity = i.quantity - :number, " + 
-                "i.totalCost = i.unitCost * (i.quantity - :number) \n " +
-                "WHERE i.iid = :itemId")
+    @Query(value="UPDATE ItemsEntity i SET i.quantity = i.quantity - :number, i.totalCost = i.unitCost * (i.quantity - :number) WHERE i.iid = :itemId")
     @Modifying
     public int requestItem(@Param("number") int number, @Param("itemId") long itemId);
 

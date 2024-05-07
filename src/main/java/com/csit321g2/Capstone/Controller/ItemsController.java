@@ -131,9 +131,9 @@ public class ItemsController {
 		return iserv.fetchFullInfo(info);
 	}
 
-	@PutMapping("requestItem")
-	public int requestItem(@RequestBody int number, @RequestBody long itemId) {
-		return number;
+	@PutMapping("/requestItem/{itemId}")
+	public ItemsEntity requestItem(@RequestParam int number, @PathVariable long itemId) {
+		return iserv.requestItem(number,itemId);
 	}
 
 	@PutMapping("/updateStatus/{iid}")

@@ -135,8 +135,33 @@ public class ItemsService {
 		return irepo.fetchFullInfo(info);
 	}
 
-	public int requestItem(int number, long itemId){
-		return (number);
+	@SuppressWarnings("finally")
+	public ItemsEntity requestItem(int number, long itemId){
+		ItemsEntity test = new ItemsEntity();
+		int quanti;
+		int finalQuanti;
+		float unitcost;
+		float finalTotal;
+
+		try{
+			test = irepo.findById(itemId).get();
+
+			quanti = test.getQuantity();
+			unitcost = test.getUnitCost();
+
+			finalQuanti = quanti - number;
+			finalTotal = unitcost * (quanti - number);
+
+			test.setQuantity(finalQuanti);
+			test.setTotalCost(finalTotal);
+
+			//test.setStatus(status);
+		} catch (NoSuchElementException ex){
+			throw new NoSuchElementException("Item " + itemId + " does not exist!");
+		} finally {
+			return irepo.save(test);
+		}
+		
 	}
 	
 	@SuppressWarnings("finally")

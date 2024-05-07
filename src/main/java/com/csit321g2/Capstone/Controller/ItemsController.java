@@ -136,9 +136,9 @@ public class ItemsController {
 		return number;
 	}
 
-	@PutMapping("updateStat")
-	public int updateStatus(@RequestParam String stat, @RequestParam int statId) {
-		return statId;
+	@PutMapping("/updateStatus/{iid}")
+	public ItemsEntity updateStatus(@PathVariable Long iid, @RequestParam String status) {
+		return iserv.updateStatus(iid, status);
 	}
 	
 	@GetMapping("/logsSpeci")

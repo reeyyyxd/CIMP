@@ -28,7 +28,7 @@ public class LogService {
     @Autowired
     ItemsRepository irepo;
 
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("KK:mm:ss a");
 
     public LogEntity addLog(LogEntity log, Long uid, Long iid) {
         LocalDate date = LocalDate.now();

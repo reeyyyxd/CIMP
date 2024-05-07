@@ -24,8 +24,6 @@ public class ItemsService {
 		return irepo.findAll();
 	}
 
-
-	
 	@SuppressWarnings("finally")
 	public ItemsEntity updateItem(Long propertyTag, ItemsEntity newItemDetails) {
 		ItemsEntity item = new ItemsEntity();
@@ -58,7 +56,6 @@ public class ItemsService {
 		}
 	}
 
-	
 	public String deleteItem(Long propertyTag) {
 		String msg = "";
 		
@@ -69,7 +66,6 @@ public class ItemsService {
 			msg = "Item " + propertyTag + " does not exist.";
 		return msg;
 	}	
-
 
 	public List<String>fetchAccPer(){
 		return irepo.fetchAccPer();
@@ -143,9 +139,18 @@ public class ItemsService {
 		return (number);
 	}
 	
+	@SuppressWarnings("finally")
+	public ItemsEntity updateStatus(Long iid, String status){
+		ItemsEntity test = new ItemsEntity();
+		try{
+			test = irepo.findById(iid).get();
 
-	public int updateStatus(String stat, int statId){
-		return (statId);
+			test.setStatus(status);
+		} catch (NoSuchElementException ex){
+			throw new NoSuchElementException("Item " + iid + " does not exist!");
+		} finally {
+			return irepo.save(test);
+		}
 	}
 
 	public List<LogEntity> logsSpeci(String num){
@@ -155,7 +160,6 @@ public class ItemsService {
 	public List<LogEntity> searchLogs(String month, String year, String day, String type ,String bef, String aft){
 		return irepo.searchLogs(month,year,day,type ,bef,aft);
 	}
-
 
 	public List<ItemsEntity> fetchFilter(String acc_per,
 	String department,
@@ -188,4 +192,5 @@ public class ItemsService {
 	String lifespan) {
 		return irepo.fetchSum(acc_per,department,designation,status,uom,supplier,building,room,name,model,type,invoice_date,lifespan);
 	}
+
 }

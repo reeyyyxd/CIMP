@@ -19,43 +19,43 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
 	//public List<AccountEntity> fetchAllCustom(@Param("fname")String fname,@Param("lname")String lname);
 
 
-    @Query(value="SELECT i.accPerson FROM ItemsEntity i")
+    @Query(value="SELECT i.accPerson FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchAccPer();
 
-    @Query(value="SELECT i.department FROM ItemsEntity i")
+    @Query(value="SELECT i.department FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchDep();
 
-    @Query(value="SELECT i.designation FROM ItemsEntity i")
+    @Query(value="SELECT i.designation FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchDesig();
 
-    @Query(value="SELECT i.status FROM ItemsEntity i")
+    @Query(value="SELECT i.status FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchStatus();
 
-    @Query(value="SELECT i.unitOfMeasurement FROM ItemsEntity i")
+    @Query(value="SELECT i.unitOfMeasurement FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchUom();
 
-    @Query(value="SELECT i.supplier FROM ItemsEntity i")
+    @Query(value="SELECT i.supplier FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchSupp();
 
-    @Query(value="SELECT l.building FROM LocationEntity l")
+    @Query(value="SELECT l.building FROM LocationEntity l, ItemsEntity i WHERE i.location.lid = l.lid AND (CAST(i.isDeleted AS int) = 0)")
     public List<String> fetchBuilding();
 
-    @Query(value="SELECT l.room FROM LocationEntity l")
+    @Query(value="SELECT l.room FROM LocationEntity l, ItemsEntity i WHERE i.location.lid = l.lid AND (CAST(i.isDeleted AS int) = 0)")
     public List<String> fetchRoom();
 
-    @Query(value="SELECT d.name FROM DescriptionEntity d")
+    @Query(value="SELECT d.name FROM DescriptionEntity d, ItemsEntity i WHERE i.description.did = d.did AND (CAST(i.isDeleted AS int) = 0)")
     public List<String> fetchName();
 
-    @Query(value="SELECT d.model FROM DescriptionEntity d")
+    @Query(value="SELECT d.model FROM DescriptionEntity d, ItemsEntity i WHERE i.description.did = d.did AND (CAST(i.isDeleted AS int) = 0)")
     public List<String> fetchModel();
 
-    @Query(value="SELECT d.type FROM DescriptionEntity d")
+    @Query(value="SELECT d.type FROM DescriptionEntity d, ItemsEntity i WHERE i.description.did = d.did AND (CAST(i.isDeleted AS int) = 0)")
     public List<String> fetchType();
 
-    @Query(value="SELECT i.invoiceDate FROM ItemsEntity i")
+    @Query(value="SELECT i.invoiceDate FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchInvoiceDate();
 
-    @Query(value="SELECT i.lifespan FROM ItemsEntity i")
+    @Query(value="SELECT i.lifespan FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchLifespan();
 
     @Query(value="SELECT l.type FROM LogEntity l")
@@ -135,7 +135,7 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
     "AND (CAST(i.iid AS STRING) LIKE %:search% " +  
     "OR CAST(i.invoiceNumber AS STRING) LIKE %:search% " +
     "OR CAST(i.issueOrder AS STRING) LIKE %:search% " +
-    "OR d.serialNumber LIKE %:search%)")
+    "OR d.serialNumber LIKE %:search%) AND CAST(i.isDeleted AS int) = 0")
     public List<ItemsEntity> fetchSearch(@Param("search") String search);
 
     @Query(value="SELECT i,l,d FROM ItemsEntity i , LocationEntity l, DescriptionEntity d " +
@@ -157,20 +157,21 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
     "AND d.model LIKE %:model% " +
     "AND d.type LIKE %:type% " +
     "AND CAST(i.invoiceDate AS STRING) LIKE %:invoice_date% " +
-    "AND CAST(i.lifespan AS STRING) LIKE %:lifespan% )")
-    public List<ItemsEntity> fetchFilter(@Param("acc_per")String acc_per,
-    @Param("department")String department,
-    @Param("designation")String designation,
-    @Param("status")String status,
-    @Param("uom")String uom,
-    @Param("supplier")String supplier,
-    @Param("building")String building,
-    @Param("room")String room,
-    @Param("name")String name,
-    @Param("model")String model,
-    @Param("type") String type,
-    @Param("invoice_date") String invoice_date,
-    @Param("lifespan") String lifespan);
+    "AND CAST(i.lifespan AS STRING) LIKE %:lifespan% ) AND CAST(i.isDeleted AS int) = 0")
+public List<ItemsEntity> fetchFilter(@Param("acc_per") String acc_per,
+                                      @Param("department") String department,
+                                      @Param("designation") String designation,
+                                      @Param("status") String status,
+                                      @Param("uom") String uom,
+                                      @Param("supplier") String supplier,
+                                      @Param("building") String building,
+                                      @Param("room") String room,
+                                      @Param("name") String name,
+                                      @Param("model") String model,
+                                      @Param("type") String type,
+                                      @Param("invoice_date") String invoice_date,
+                                      @Param("lifespan") String lifespan);
+
 
     @Query(value="SELECT SUM(totalCost) FROM ItemsEntity i , LocationEntity l, DescriptionEntity d " +
     "WHERE i.location.lid = l.lid AND i.description.did = d.did " +
@@ -186,7 +187,7 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
     "AND d.model LIKE %:model% " +
     "AND d.type LIKE %:type% " +
     "AND CAST(i.invoiceDate AS STRING) LIKE %:invoice_date% " +
-    "AND CAST(i.lifespan AS STRING) LIKE %:lifespan% )")
+    "AND CAST(i.lifespan AS STRING) LIKE %:lifespan% ) AND CAST(i.isDeleted AS int) = 0")
     public long fetchSum(@Param("acc_per")String acc_per,
     @Param("department")String department,
     @Param("designation")String designation,

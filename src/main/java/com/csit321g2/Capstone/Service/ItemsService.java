@@ -17,6 +17,7 @@ public class ItemsService {
 	ItemsRepository irepo;
 	
 	public ItemsEntity insertItem(ItemsEntity item) {
+		item.setDeleted(false);
 		return irepo.save(item);
 	}
 	
@@ -60,7 +61,10 @@ public class ItemsService {
 		String msg = "";
 		
 		if (irepo.findById(propertyTag) != null) {
-			irepo.deleteById(propertyTag);
+			// irepo.deleteById(propertyTag);
+			ItemsEntity test = irepo.findById(propertyTag).get();
+			test.setDeleted(true);
+			irepo.save(test);
 			msg = "Item " + propertyTag + " is successfully deleted!";
 		} else
 			msg = "Item " + propertyTag + " does not exist.";

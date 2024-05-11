@@ -80,7 +80,21 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
     
 
     @Query("SELECT l FROM LogEntity l WHERE " +
-        "CAST(FUNCTION('MONTHNAME', l.date) AS string) LIKE %:month " +
+        "CASE " +
+        "    WHEN FUNCTION('MONTHNAME', l.date) = 'January' THEN '1' " +
+        "    WHEN FUNCTION('MONTHNAME', l.date) = 'February' THEN '2' " +
+        "    WHEN FUNCTION('MONTHNAME', l.date) = 'March' THEN '3' " +
+        "    WHEN FUNCTION('MONTHNAME', l.date) = 'April' THEN '4' " +
+        "    WHEN FUNCTION('MONTHNAME', l.date) = 'May' THEN '5' " +
+        "    WHEN FUNCTION('MONTHNAME', l.date) = 'June' THEN '6' " +
+        "    WHEN FUNCTION('MONTHNAME', l.date) = 'July' THEN '7' " +
+        "    WHEN FUNCTION('MONTHNAME', l.date) = 'August' THEN '8' " +
+        "    WHEN FUNCTION('MONTHNAME', l.date) = 'September' THEN '9' " +
+        "    WHEN FUNCTION('MONTHNAME', l.date) = 'October' THEN 'ten' " +
+        "    WHEN FUNCTION('MONTHNAME', l.date) = 'November' THEN 'eleven' " +
+        "    WHEN FUNCTION('MONTHNAME', l.date) = 'December' THEN 'twelve' " +
+        "    ELSE 'unknown' " +
+        "END LIKE :month% " +
         "AND CAST(FUNCTION('YEAR', l.date) AS string) LIKE %:year " +
         "AND CASE " +
             "    WHEN DAY(l.date) = 1 THEN '1' " +
@@ -115,16 +129,17 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
             "    WHEN DAY(l.date) = 30 THEN 'thirties' " +
             "    WHEN DAY(l.date) = 31 THEN 'thirty one' " +
             "    ELSE 'unknown' " +
-            "END LIKE  :day% " +
+            "END LIKE :day% " +
         "AND l.type LIKE %:type% " +
         "AND ((:bef = '' AND :aft = '') OR (CAST(l.time AS STRING) BETWEEN :bef and :aft))")
-    List<LogEntity> searchLogs(
-        @Param("month") String month,
-        @Param("year") String year,
-        @Param("day") String day,
-        @Param("type") String type ,
-        @Param("bef") String bef,
-        @Param("aft") String aft);
+List<LogEntity> searchLogs(
+    @Param("month") String month,
+    @Param("year") String year,
+    @Param("day") String day,
+    @Param("type") String type ,
+    @Param("bef") String bef,
+    @Param("aft") String aft);
+
 
 
     

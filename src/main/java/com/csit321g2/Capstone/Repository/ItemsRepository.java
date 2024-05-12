@@ -64,6 +64,12 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
     @Query(value="SELECT CAST(FUNCTION('YEAR', l.date) AS String) FROM LogEntity l ORDER BY l.date ASC")
     public List<String> fetchLogsYear();
 
+    @Query(value="SELECT i.quantity FROM ItemsEntity i WHERE i.iid = :num")
+    public int fetchQuantiLog(@Param("num") String num);
+
+    @Query(value="SELECT i.status FROM ItemsEntity i WHERE i.iid = :type")
+    public String fetchStatusLog(@Param("type") String type);
+
     
       
     @Query(value="UPDATE ItemsEntity i SET i.quantity = i.quantity - :number, i.totalCost = i.unitCost * (i.quantity - :number) WHERE i.iid = :itemId")

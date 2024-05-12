@@ -139,6 +139,14 @@ public class ItemsService {
 		return irepo.fetchFullInfo(info);
 	}
 
+	public int fetchQuantiLog(String num){
+		return irepo.fetchQuantiLog(num);
+	}
+
+	public String fetchStatusLog(String type){
+		return irepo.fetchStatusLog(type);
+	}
+
 	@SuppressWarnings("finally")
 	public ItemsEntity requestItem(int number, long itemId){
 		ItemsEntity test = new ItemsEntity();

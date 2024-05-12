@@ -126,6 +126,17 @@ public class ItemsController {
 		return iserv.fetchSearch(search);
 	}
 
+
+	@GetMapping("statusLog")
+	public String fetchStatusLog(@RequestParam String type){
+		return iserv.fetchStatusLog(type);
+	}
+
+	@GetMapping("quantiLog")
+	public int fetchQuantiLog(@RequestParam String num){
+		return iserv.fetchQuantiLog(num);
+	}
+
 	@GetMapping("fullInfo")
 	public ItemsEntity fetchFullInfo(@RequestParam String info) {
 		return iserv.fetchFullInfo(info);

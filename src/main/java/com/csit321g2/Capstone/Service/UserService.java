@@ -21,6 +21,7 @@ public class UserService {
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
         String encryptedPwd = bcrypt.encode(user.getPassword());
         user.setPassword(encryptedPwd);
+		user.setDeleted(false);
 
         return urepo.save(user);
     }
@@ -57,7 +58,7 @@ public class UserService {
 			Optional<UserEntity> userOptional = urepo.findById(uid);
 			if (userOptional.isPresent()) {
 				UserEntity user = userOptional.get();
-				urepo.delete(user);
+				user.setDeleted(true);
 				msg = "User with ID " + uid + " is successfully deleted!";
 			} else {
 				msg = "User with ID " + uid + " does not exist.";
@@ -69,29 +70,16 @@ public class UserService {
 		return msg;
 	}
 	
-	
-	
     public boolean validateUserCredentials(String username, String password) {
-        // Implement logic to check credentials against your database
-        // Fetch admin by email and compare passwords (after hashing and salting)
 
-        // Example pseudo-code:
+		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 		UserEntity user = urepo.findByUsername(username);
         
-        if (user != null && user.getPassword().equals(password)) {
-            return true; // Credentials are valid
+        if (user != null && bcrypt.matches(password, user.getPassword())) {
+            return true;
         } else {
-            return false; // Invalid credentials
+            return false;
         }
     }
 
-    public String deleteUser(int aid) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteUser'");
-    }
-
-    public Optional<UserEntity> findById(long uid) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
-    }
 }

@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.csit321g2.Capstone.Entity.UserEntity;
 import com.csit321g2.Capstone.Repository.UserRepository;
@@ -79,6 +80,29 @@ public class UserService {
             return true;
         } else {
             return false;
+        }
+    }
+
+	public UserEntity loginTest(@RequestBody UserEntity loginData) {
+        String username = loginData.getUsername();
+        String password = loginData.getPassword();
+
+        boolean isValidCredentials = validateUserCredentials(username, password);
+
+        UserEntity user = new UserEntity();
+		UserEntity test = new UserEntity();
+
+        if (isValidCredentials) {
+            user = urepo.findByUsername(username);
+			test.setUid(user.getUid());
+			test.setFname(user.getFname());
+			test.setLname(user.getLname());
+			test.setUsername(user.getUsername());
+			test.setType(user.getType());
+
+			return test;
+        } else {
+            return null;
         }
     }
 

@@ -19,6 +19,12 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
 	//public List<AccountEntity> fetchAllCustom(@Param("fname")String fname,@Param("lname")String lname);
 
 
+    @Query(value="SELECT i FROM ItemsEntity i ORDER BY i.iid DESC LIMIT 10")
+    public List<ItemsEntity> getItemDash();
+
+    @Query(value="SELECT l FROM LogEntity l ORDER BY l.logid DESC LIMIT 10")
+    public List<ItemsEntity> getLogDash();
+
     @Query(value="SELECT i.accPerson FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchAccPer();
 

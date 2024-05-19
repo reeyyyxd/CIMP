@@ -25,6 +25,16 @@ public class ItemsController {
 	
 	@Autowired
 	ItemsService iserv;
+
+	@GetMapping("/itemDash")
+	public List<ItemsEntity> getItemDash(){
+		return iserv.getItemDash();
+	}
+
+	@GetMapping("/logDash")
+	public List<ItemsEntity> getLogDash(){
+		return iserv.getLogDash();
+	}
 	
 	@PostMapping("/insertItem")
 	public ItemsEntity insertItem(@RequestBody ItemsEntity item) {

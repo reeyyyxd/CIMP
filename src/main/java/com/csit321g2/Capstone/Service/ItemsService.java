@@ -15,6 +15,13 @@ public class ItemsService {
 	
 	@Autowired
 	ItemsRepository irepo;
+
+	public List<ItemsEntity> getItemDash(){
+		return irepo.getItemDash();
+	}
+	public List<ItemsEntity> getLogDash(){
+		return irepo.getItemDash();
+	}
 	
 	public ItemsEntity insertItem(ItemsEntity item) {
 		item.setDeleted(false);

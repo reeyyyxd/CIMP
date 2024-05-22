@@ -19,7 +19,7 @@ import com.csit321g2.Capstone.Entity.LogEntity;
 import com.csit321g2.Capstone.Service.ItemsService;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:5173", "http://10.241.126.247:5173"})
+@CrossOrigin(origins = {"http://localhost:5173", "http://10.241.4.80:5173"})
 @RequestMapping("/item")
 public class ItemsController {
 	

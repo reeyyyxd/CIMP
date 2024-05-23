@@ -15,15 +15,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.csit321g2.Capstone.Entity.ItemsEntity;
+import com.csit321g2.Capstone.Entity.LogEntity;
 import com.csit321g2.Capstone.Service.ItemsService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "http://10.241.4.80:5173"})
 @RequestMapping("/item")
 public class ItemsController {
 	
 	@Autowired
 	ItemsService iserv;
+
+	@GetMapping("/itemDash")
+	public List<ItemsEntity> getItemDash(){
+		return iserv.getItemDash();
+	}
+
+	@GetMapping("/logDash")
+	public List<ItemsEntity> getLogDash(){
+		return iserv.getLogDash();
+	}
 	
 	@PostMapping("/insertItem")
 	public ItemsEntity insertItem(@RequestBody ItemsEntity item) {
@@ -35,8 +46,8 @@ public class ItemsController {
 		return iserv.getAllItems();
 	}
 	
-	@PutMapping("/updateItem")
-	public ItemsEntity updateItem(@RequestParam Long propertyTag, @RequestBody ItemsEntity newItemDetails) {
+	@PutMapping("/updateItem/{propertyTag}")
+	public ItemsEntity updateItem(@PathVariable Long propertyTag, @RequestBody ItemsEntity newItemDetails) {
 		return iserv.updateItem(propertyTag, newItemDetails);
 	}
 	
@@ -109,10 +120,58 @@ public class ItemsController {
 	public List<String> fetchLifespan() {
 		return iserv.fetchLifespan();
 	}
-	
+
+	@GetMapping("/logstype")
+	public List<String> fetchLogsType() {
+		return iserv.fetchLogsType();
+	}
+
+	@GetMapping("/logsyear")
+	public List<String> fetchLogsYear() {
+		return iserv.fetchLogsYear();
+	}
+
 	@GetMapping("search")
-	public ItemsEntity fetchSearch(@RequestParam String search) {
+	public List<ItemsEntity> fetchSearch(@RequestParam String search) {
 		return iserv.fetchSearch(search);
+	}
+
+
+	@GetMapping("statusLog")
+	public String fetchStatusLog(@RequestParam String type){
+		return iserv.fetchStatusLog(type);
+	}
+
+	@GetMapping("quantiLog")
+	public int fetchQuantiLog(@RequestParam String num){
+		return iserv.fetchQuantiLog(num);
+	}
+
+	@GetMapping("fullInfo")
+	public ItemsEntity fetchFullInfo(@RequestParam String info) {
+		return iserv.fetchFullInfo(info);
+	}
+
+	@PutMapping("/requestItem")
+	public ItemsEntity requestItem(@RequestParam int number, @RequestParam long itemId) {
+		return iserv.requestItem(number,itemId);
+	}
+
+	@PutMapping("/updateStatus")
+	public ItemsEntity updateStatus(@RequestParam Long iid, @RequestParam String status) {
+		return iserv.updateStatus(iid, status);
+	}
+	
+	@GetMapping("/logsSpeci")
+	public List<LogEntity> logsSpeci(@RequestParam String num) {
+		return iserv.logsSpeci(num);
+	}
+	
+
+	@GetMapping("/searchLogs")
+	public List<LogEntity> searchLogs(@RequestParam String month,@RequestParam String year,@RequestParam String day,
+	@RequestParam String type,@RequestParam String bef, @RequestParam String aft){
+		return iserv.searchLogs(month, year, day, type , bef, aft);
 	}
 	
 

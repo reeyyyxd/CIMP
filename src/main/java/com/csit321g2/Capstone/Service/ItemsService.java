@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.csit321g2.Capstone.Entity.ItemsEntity;
+import com.csit321g2.Capstone.Entity.LogEntity;
 import com.csit321g2.Capstone.Repository.ItemsRepository;
 
 @Service
@@ -14,15 +15,23 @@ public class ItemsService {
 	
 	@Autowired
 	ItemsRepository irepo;
+
+	public List<ItemsEntity> getItemDash(){
+		return irepo.getItemDash();
+	}
+	public List<ItemsEntity> getLogDash(){
+		return irepo.getItemDash();
+	}
 	
 	public ItemsEntity insertItem(ItemsEntity item) {
+		item.setDeleted(false);
 		return irepo.save(item);
 	}
 	
 	public List<ItemsEntity> getAllItems(){
 		return irepo.findAll();
 	}
-	
+
 	@SuppressWarnings("finally")
 	public ItemsEntity updateItem(Long propertyTag, ItemsEntity newItemDetails) {
 		ItemsEntity item = new ItemsEntity();
@@ -54,18 +63,20 @@ public class ItemsService {
 			return irepo.save(item);
 		}
 	}
-	
+
 	public String deleteItem(Long propertyTag) {
 		String msg = "";
 		
 		if (irepo.findById(propertyTag) != null) {
-			irepo.deleteById(propertyTag);
+			// irepo.deleteById(propertyTag);
+			ItemsEntity test = irepo.findById(propertyTag).get();
+			test.setDeleted(true);
+			irepo.save(test);
 			msg = "Item " + propertyTag + " is successfully deleted!";
 		} else
 			msg = "Item " + propertyTag + " does not exist.";
 		return msg;
 	}	
-
 
 	public List<String>fetchAccPer(){
 		return irepo.fetchAccPer();
@@ -119,8 +130,79 @@ public class ItemsService {
 		return irepo.fetchLifespan();
 	}
 
-	public ItemsEntity fetchSearch(String search){
+	public List<String>fetchLogsType(){
+		return irepo.fetchLogsType();
+	}
+
+	public List<String>fetchLogsYear(){
+		return irepo.fetchLogsYear();
+	}
+
+	public List<ItemsEntity> fetchSearch(String search){
 		return irepo.fetchSearch(search);
+	}
+
+	public ItemsEntity fetchFullInfo(String info){
+		return irepo.fetchFullInfo(info);
+	}
+
+	public int fetchQuantiLog(String num){
+		return irepo.fetchQuantiLog(num);
+	}
+
+	public String fetchStatusLog(String type){
+		return irepo.fetchStatusLog(type);
+	}
+
+	@SuppressWarnings("finally")
+	public ItemsEntity requestItem(int number, long itemId){
+		ItemsEntity test = new ItemsEntity();
+		int quanti;
+		int finalQuanti;
+		float unitcost;
+		float finalTotal;
+
+		try{
+			test = irepo.findById(itemId).get();
+
+			quanti = test.getQuantity();
+			unitcost = test.getUnitCost();
+
+			finalQuanti = quanti - number;
+			finalTotal = unitcost * (quanti - number);
+
+			test.setQuantity(finalQuanti);
+			test.setTotalCost(finalTotal);
+
+			//test.setStatus(status);
+		} catch (NoSuchElementException ex){
+			throw new NoSuchElementException("Item " + itemId + " does not exist!");
+		} finally {
+			return irepo.save(test);
+		}
+		
+	}
+	
+	@SuppressWarnings("finally")
+	public ItemsEntity updateStatus(Long iid, String status){
+		ItemsEntity test = new ItemsEntity();
+		try{
+			test = irepo.findById(iid).get();
+
+			test.setStatus(status);
+		} catch (NoSuchElementException ex){
+			throw new NoSuchElementException("Item " + iid + " does not exist!");
+		} finally {
+			return irepo.save(test);
+		}
+	}
+
+	public List<LogEntity> logsSpeci(String num){
+		return irepo.logsSpeci(num);
+	}
+
+	public List<LogEntity> searchLogs(String month, String year, String day, String type ,String bef, String aft){
+		return irepo.searchLogs(month,year,day,type ,bef,aft);
 	}
 
 	public List<ItemsEntity> fetchFilter(String acc_per,
@@ -154,4 +236,5 @@ public class ItemsService {
 	String lifespan) {
 		return irepo.fetchSum(acc_per,department,designation,status,uom,supplier,building,room,name,model,type,invoice_date,lifespan);
 	}
+
 }

@@ -17,7 +17,7 @@ import com.csit321g2.Capstone.Service.UserService;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "http://10.241.4.80:5173"})
 public class UserController {
 
     @Autowired
@@ -45,20 +45,10 @@ public class UserController {
             return "Invalid user ID";
         }
         return userv.deleteUser(uid);
-}
-
-    @PostMapping("/login")
-    public String loginUser(@RequestBody UserEntity loginRequest) {
-        String username = loginRequest.getUsername();
-        String password = loginRequest.getPassword();
-
-        boolean isValidCredentials = userv.validateUserCredentials(username, password);
-
-        if (isValidCredentials) {
-            return "Login successful";
-        } else {
-            return "Invalid email or password";
-        }
     }
     
+    @PostMapping("/login")
+    public UserEntity loginTest(@RequestBody UserEntity loginData) {
+        return userv.loginTest(loginData);
+    }
 }

@@ -58,12 +58,14 @@ public class ItemsEntity {
 	
 	private String remarks;
 
+	private boolean isDeleted;
+
 	public ItemsEntity() {
 	}
 
 	public ItemsEntity(int issueOrder, String department, String accPerson, String designation, String invoiceNumber,
 			int invoiceDate, String supplier, int quantity, String unitOfMeasurement, DescriptionEntity description,
-			float unitCost, float totalCost, LocationEntity location, String status, String lifespan, String remarks) {
+			float unitCost, float totalCost, LocationEntity location, String status, String lifespan, String remarks, boolean isDeleted) {
 		this.issueOrder = issueOrder;
 		this.department = department;
 		this.accPerson = accPerson;
@@ -80,6 +82,7 @@ public class ItemsEntity {
 		this.status = status;
 		this.lifespan = lifespan;
 		this.remarks = remarks;
+		this.isDeleted = isDeleted;
 	}
 
 	public long getIid() {
@@ -218,5 +221,13 @@ public class ItemsEntity {
 		this.remarks = remarks;
 	}
 
-	
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+		
 }

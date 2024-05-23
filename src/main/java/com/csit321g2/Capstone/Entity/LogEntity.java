@@ -30,16 +30,19 @@ public class LogEntity {
     private LocalDate date;
     private LocalTime time;
     private String type;
+    private String description;
     
     public LogEntity() {
     }
 
-    public LogEntity(UserEntity user, ItemsEntity item, LocalDate date, LocalTime time, String type) {
+    public LogEntity(UserEntity user, ItemsEntity item, LocalDate date, LocalTime time, String type,
+            String description) {
         this.user = user;
         this.item = item;
         this.date = date;
         this.time = time;
         this.type = type;
+        this.description = description;
     }
 
     public long getLogid() {
@@ -90,5 +93,12 @@ public class LogEntity {
         this.type = type;
     }
 
-    
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }

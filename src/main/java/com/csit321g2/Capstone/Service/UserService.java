@@ -34,7 +34,10 @@ public class UserService {
     @SuppressWarnings("finally")
 	public UserEntity updateUser(long uid, UserEntity newuserDetails) {
 		UserEntity user = new UserEntity();
+		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+
 		try {
+			
 			//search id b4 update
 			user = urepo.findById(uid).get();
 			
@@ -42,8 +45,11 @@ public class UserService {
 			user.setFname(newuserDetails.getFname());
 			user.setLname(newuserDetails.getLname());
 			user.setUsername(newuserDetails.getUsername());
-			user.setPassword(newuserDetails.getPassword());
-			
+
+			if(newuserDetails.getPassword() != null) {
+				String encryptedPwd = bcrypt.encode(newuserDetails.getPassword());
+				user.setPassword(encryptedPwd);
+			}
 			
 		} catch (NoSuchElementException ex){
 			throw new NoSuchElementException("user " + uid + " does not exist!");

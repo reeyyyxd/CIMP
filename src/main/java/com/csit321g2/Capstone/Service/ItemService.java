@@ -6,35 +6,35 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.csit321g2.Capstone.Entity.ItemsEntity;
+import com.csit321g2.Capstone.Entity.ItemEntity;
 import com.csit321g2.Capstone.Entity.LogEntity;
-import com.csit321g2.Capstone.Repository.ItemsRepository;
+import com.csit321g2.Capstone.Repository.ItemRepository;
 
 @Service
-public class ItemsService {
+public class ItemService {
 	
 	@Autowired
-	ItemsRepository irepo;
+	ItemRepository irepo;
 
-	public List<ItemsEntity> getItemDash(){
+	public List<ItemEntity> getItemDash(){
 		return irepo.getItemDash();
 	}
-	public List<ItemsEntity> getLogDash(){
+	public List<ItemEntity> getLogDash(){
 		return irepo.getItemDash();
 	}
 	
-	public ItemsEntity insertItem(ItemsEntity item) {
+	public ItemEntity insertItem(ItemEntity item) {
 		item.setDeleted(false);
 		return irepo.save(item);
 	}
 	
-	public List<ItemsEntity> getAllItems(){
+	public List<ItemEntity> getAllItems() {
 		return irepo.findAll();
 	}
 
 	@SuppressWarnings("finally")
-	public ItemsEntity updateItem(Long propertyTag, ItemsEntity newItemDetails) {
-		ItemsEntity item = new ItemsEntity();
+	public ItemEntity updateItem(Long propertyTag, ItemEntity newItemDetails) {
+		ItemEntity item = new ItemEntity();
 		try {
 			//search id b4 update
 			item = irepo.findById(propertyTag).get();
@@ -69,7 +69,7 @@ public class ItemsService {
 		
 		if (irepo.findById(propertyTag) != null) {
 			// irepo.deleteById(propertyTag);
-			ItemsEntity test = irepo.findById(propertyTag).get();
+			ItemEntity test = irepo.findById(propertyTag).get();
 			test.setDeleted(true);
 			irepo.save(test);
 			msg = "Item " + propertyTag + " is successfully deleted!";
@@ -138,11 +138,11 @@ public class ItemsService {
 		return irepo.fetchLogsYear();
 	}
 
-	public List<ItemsEntity> fetchSearch(String search){
+	public List<ItemEntity> fetchSearch(String search){
 		return irepo.fetchSearch(search);
 	}
 
-	public ItemsEntity fetchFullInfo(String info){
+	public ItemEntity fetchFullInfo(String info){
 		return irepo.fetchFullInfo(info);
 	}
 
@@ -155,8 +155,8 @@ public class ItemsService {
 	}
 
 	@SuppressWarnings("finally")
-	public ItemsEntity requestItem(int number, long itemId){
-		ItemsEntity test = new ItemsEntity();
+	public ItemEntity requestItem(int number, long itemId){
+		ItemEntity test = new ItemEntity();
 		int quanti;
 		int finalQuanti;
 		float unitcost;
@@ -184,8 +184,8 @@ public class ItemsService {
 	}
 	
 	@SuppressWarnings("finally")
-	public ItemsEntity updateStatus(Long iid, String status){
-		ItemsEntity test = new ItemsEntity();
+	public ItemEntity updateStatus(Long iid, String status){
+		ItemEntity test = new ItemEntity();
 		try{
 			test = irepo.findById(iid).get();
 
@@ -205,7 +205,7 @@ public class ItemsService {
 		return irepo.searchLogs(month,year,day,type ,bef,aft);
 	}
 
-	public List<ItemsEntity> fetchFilter(String acc_per,
+	public List<ItemEntity> fetchFilter(String acc_per,
 	String department,
     String designation,
     String status,

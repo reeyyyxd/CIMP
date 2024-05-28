@@ -14,40 +14,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.csit321g2.Capstone.Entity.ItemsEntity;
+import com.csit321g2.Capstone.Entity.ItemEntity;
 import com.csit321g2.Capstone.Entity.LogEntity;
-import com.csit321g2.Capstone.Service.ItemsService;
+import com.csit321g2.Capstone.Service.ItemService;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:5173", "http://10.241.4.80:5173"})
 @RequestMapping("/item")
-public class ItemsController {
+public class ItemController {
 	
 	@Autowired
-	ItemsService iserv;
+	ItemService iserv;
 
 	@GetMapping("/itemDash")
-	public List<ItemsEntity> getItemDash(){
+	public List<ItemEntity> getItemDash(){
 		return iserv.getItemDash();
 	}
 
 	@GetMapping("/logDash")
-	public List<ItemsEntity> getLogDash(){
+	public List<ItemEntity> getLogDash(){
 		return iserv.getLogDash();
 	}
 	
 	@PostMapping("/insertItem")
-	public ItemsEntity insertItem(@RequestBody ItemsEntity item) {
+	public ItemEntity insertItem(@RequestBody ItemEntity item) {
 		return iserv.insertItem(item);
 	}
 	
 	@GetMapping("/getAllItems")
-	public List<ItemsEntity> getAllItems(){
+	public List<ItemEntity> getAllItems(){
 		return iserv.getAllItems();
 	}
 	
 	@PutMapping("/updateItem/{propertyTag}")
-	public ItemsEntity updateItem(@PathVariable Long propertyTag, @RequestBody ItemsEntity newItemDetails) {
+	public ItemEntity updateItem(@PathVariable Long propertyTag, @RequestBody ItemEntity newItemDetails) {
 		return iserv.updateItem(propertyTag, newItemDetails);
 	}
 	
@@ -132,7 +132,7 @@ public class ItemsController {
 	}
 
 	@GetMapping("search")
-	public List<ItemsEntity> fetchSearch(@RequestParam String search) {
+	public List<ItemEntity> fetchSearch(@RequestParam String search) {
 		return iserv.fetchSearch(search);
 	}
 
@@ -148,17 +148,17 @@ public class ItemsController {
 	}
 
 	@GetMapping("fullInfo")
-	public ItemsEntity fetchFullInfo(@RequestParam String info) {
+	public ItemEntity fetchFullInfo(@RequestParam String info) {
 		return iserv.fetchFullInfo(info);
 	}
 
 	@PutMapping("/requestItem")
-	public ItemsEntity requestItem(@RequestParam int number, @RequestParam long itemId) {
+	public ItemEntity requestItem(@RequestParam int number, @RequestParam long itemId) {
 		return iserv.requestItem(number,itemId);
 	}
 
 	@PutMapping("/updateStatus")
-	public ItemsEntity updateStatus(@RequestParam Long iid, @RequestParam String status) {
+	public ItemEntity updateStatus(@RequestParam Long iid, @RequestParam String status) {
 		return iserv.updateStatus(iid, status);
 	}
 	
@@ -176,7 +176,7 @@ public class ItemsController {
 	
 
 	@GetMapping("/filter")
-	public List<ItemsEntity> fetchFilter(@RequestParam String acc_per, 
+	public List<ItemEntity> fetchFilter(@RequestParam String acc_per, 
 	@RequestParam String department,
     @RequestParam String designation,
     @RequestParam String status,

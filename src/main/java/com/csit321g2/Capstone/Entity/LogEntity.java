@@ -25,7 +25,7 @@ public class LogEntity {
     
     @ManyToOne
     @JoinColumn(name = "propertyTag", referencedColumnName = "propertyTag")
-    private ItemsEntity item;
+    private ItemEntity item;
 
     private LocalDate date;
     private LocalTime time;
@@ -35,7 +35,7 @@ public class LogEntity {
     public LogEntity() {
     }
 
-    public LogEntity(UserEntity user, ItemsEntity item, LocalDate date, LocalTime time, String type,
+    public LogEntity(UserEntity user, ItemEntity item, LocalDate date, LocalTime time, String type,
             String description) {
         this.user = user;
         this.item = item;
@@ -61,11 +61,11 @@ public class LogEntity {
         this.user = user;
     }
 
-    public ItemsEntity getItem() {
+    public ItemEntity getItem() {
         return item;
     }
 
-    public void setItem(ItemsEntity item) {
+    public void setItem(ItemEntity item) {
         this.item = item;
     }
 

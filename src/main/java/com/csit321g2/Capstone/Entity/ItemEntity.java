@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tblitems")
-public class ItemsEntity {
+public class ItemEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,10 +60,10 @@ public class ItemsEntity {
 
 	private boolean isDeleted;
 
-	public ItemsEntity() {
+	public ItemEntity() {
 	}
 
-	public ItemsEntity(int issueOrder, String department, String accPerson, String designation, String invoiceNumber,
+	public ItemEntity(int issueOrder, String department, String accPerson, String designation, String invoiceNumber,
 			int invoiceDate, String supplier, int quantity, String unitOfMeasurement, DescriptionEntity description,
 			float unitCost, float totalCost, LocationEntity location, String status, String lifespan, String remarks, boolean isDeleted) {
 		this.issueOrder = issueOrder;

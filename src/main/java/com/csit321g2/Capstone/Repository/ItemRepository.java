@@ -8,60 +8,60 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.csit321g2.Capstone.Entity.ItemsEntity;
+import com.csit321g2.Capstone.Entity.ItemEntity;
 import com.csit321g2.Capstone.Entity.LogEntity;
 
 
 @Repository
-public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
+public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
 	
     //@Query(value="SELECT s FROM AccountEntity s WHERE firstname LIKE %:fname% AND lastname LIKE %:lname%")
 	//public List<AccountEntity> fetchAllCustom(@Param("fname")String fname,@Param("lname")String lname);
 
 
-    @Query(value="SELECT i FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0 ORDER BY i.iid DESC LIMIT 10")
-    public List<ItemsEntity> getItemDash();
+    @Query(value="SELECT i FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0 ORDER BY i.iid DESC LIMIT 10")
+    public List<ItemEntity> getItemDash();
 
-    @Query(value="SELECT l FROM LogEntity l, ItemsEntity i WHERE l.logid = i.iid AND CAST(i.isDeleted AS int) = 0 ORDER BY l.logid DESC LIMIT 10")
-    public List<ItemsEntity> getLogDash();
+    @Query(value="SELECT l FROM LogEntity l, ItemEntity i WHERE l.logid = i.iid AND CAST(i.isDeleted AS int) = 0 ORDER BY l.logid DESC LIMIT 10")
+    public List<ItemEntity> getLogDash();
 
-    @Query(value="SELECT i.accPerson FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0")
+    @Query(value="SELECT i.accPerson FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchAccPer();
 
-    @Query(value="SELECT i.department FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0")
+    @Query(value="SELECT i.department FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchDep();
 
-    @Query(value="SELECT i.designation FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0")
+    @Query(value="SELECT i.designation FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchDesig();
 
-    @Query(value="SELECT i.status FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0")
+    @Query(value="SELECT i.status FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchStatus();
 
-    @Query(value="SELECT i.unitOfMeasurement FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0")
+    @Query(value="SELECT i.unitOfMeasurement FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchUom();
 
-    @Query(value="SELECT i.supplier FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0")
+    @Query(value="SELECT i.supplier FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchSupp();
 
-    @Query(value="SELECT l.building FROM LocationEntity l, ItemsEntity i WHERE i.location.lid = l.lid AND (CAST(i.isDeleted AS int) = 0)")
+    @Query(value="SELECT l.building FROM LocationEntity l, ItemEntity i WHERE i.location.lid = l.lid AND (CAST(i.isDeleted AS int) = 0)")
     public List<String> fetchBuilding();
 
-    @Query(value="SELECT l.room FROM LocationEntity l, ItemsEntity i WHERE i.location.lid = l.lid AND (CAST(i.isDeleted AS int) = 0)")
+    @Query(value="SELECT l.room FROM LocationEntity l, ItemEntity i WHERE i.location.lid = l.lid AND (CAST(i.isDeleted AS int) = 0)")
     public List<String> fetchRoom();
 
-    @Query(value="SELECT d.name FROM DescriptionEntity d, ItemsEntity i WHERE i.description.did = d.did AND (CAST(i.isDeleted AS int) = 0)")
+    @Query(value="SELECT d.name FROM DescriptionEntity d, ItemEntity i WHERE i.description.did = d.did AND (CAST(i.isDeleted AS int) = 0)")
     public List<String> fetchName();
 
-    @Query(value="SELECT d.model FROM DescriptionEntity d, ItemsEntity i WHERE i.description.did = d.did AND (CAST(i.isDeleted AS int) = 0)")
+    @Query(value="SELECT d.model FROM DescriptionEntity d, ItemEntity i WHERE i.description.did = d.did AND (CAST(i.isDeleted AS int) = 0)")
     public List<String> fetchModel();
 
-    @Query(value="SELECT d.type FROM DescriptionEntity d, ItemsEntity i WHERE i.description.did = d.did AND (CAST(i.isDeleted AS int) = 0)")
+    @Query(value="SELECT d.type FROM DescriptionEntity d, ItemEntity i WHERE i.description.did = d.did AND (CAST(i.isDeleted AS int) = 0)")
     public List<String> fetchType();
 
-    @Query(value="SELECT i.invoiceDate FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0")
+    @Query(value="SELECT i.invoiceDate FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchInvoiceDate();
 
-    @Query(value="SELECT i.lifespan FROM ItemsEntity i WHERE CAST(i.isDeleted AS int) = 0")
+    @Query(value="SELECT i.lifespan FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchLifespan();
 
     @Query(value="SELECT l.type FROM LogEntity l")
@@ -70,20 +70,20 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long>{
     @Query(value="SELECT CAST(FUNCTION('YEAR', l.date) AS String) FROM LogEntity l ORDER BY l.date ASC")
     public List<String> fetchLogsYear();
 
-    @Query(value="SELECT i.quantity FROM ItemsEntity i WHERE i.iid = :num")
+    @Query(value="SELECT i.quantity FROM ItemEntity i WHERE i.iid = :num")
     public int fetchQuantiLog(@Param("num") String num);
 
-    @Query(value="SELECT i.status FROM ItemsEntity i WHERE i.iid = :type")
+    @Query(value="SELECT i.status FROM ItemEntity i WHERE i.iid = :type")
     public String fetchStatusLog(@Param("type") String type);
 
     
       
-    @Query(value="UPDATE ItemsEntity i SET i.quantity = i.quantity - :number, i.totalCost = i.unitCost * (i.quantity - :number) WHERE i.iid = :itemId")
+    @Query(value="UPDATE ItemEntity i SET i.quantity = i.quantity - :number, i.totalCost = i.unitCost * (i.quantity - :number) WHERE i.iid = :itemId")
     @Modifying
     public int requestItem(@Param("number") int number, @Param("itemId") long itemId);
 
 
-    @Query(value = "UPDATE ItemsEntity SET status = :stat WHERE iid = :statId")
+    @Query(value = "UPDATE ItemEntity SET status = :stat WHERE iid = :statId")
     @Modifying
     public int updateStatus(@Param("stat")String stat, @Param("statId") int statId);
 
@@ -157,20 +157,20 @@ List<LogEntity> searchLogs(
     
 
 
-    @Query(value="SELECT i,l,d FROM ItemsEntity i , LocationEntity l, DescriptionEntity d " +
+    @Query(value="SELECT i,l,d FROM ItemEntity i , LocationEntity l, DescriptionEntity d " +
     "WHERE i.location.lid = l.lid AND i.description.did = d.did " +
     "AND (CAST(i.iid AS STRING) LIKE %:search% " +  
     "OR CAST(i.invoiceNumber AS STRING) LIKE %:search% " +
     "OR CAST(i.issueOrder AS STRING) LIKE %:search% " +
     "OR d.serialNumber LIKE %:search%) AND CAST(i.isDeleted AS int) = 0")
-    public List<ItemsEntity> fetchSearch(@Param("search") String search);
+    public List<ItemEntity> fetchSearch(@Param("search") String search);
 
-    @Query(value="SELECT i,l,d FROM ItemsEntity i , LocationEntity l, DescriptionEntity d " +
+    @Query(value="SELECT i,l,d FROM ItemEntity i , LocationEntity l, DescriptionEntity d " +
     "WHERE i.location.lid = l.lid AND i.description.did = d.did " +
     "AND (CAST(i.iid AS STRING) = %:info%)")
-    public ItemsEntity fetchFullInfo(@Param("info") String info);
+    public ItemEntity fetchFullInfo(@Param("info") String info);
 
-    @Query(value="SELECT i,l,d FROM ItemsEntity i , LocationEntity l, DescriptionEntity d " +
+    @Query(value="SELECT i,l,d FROM ItemEntity i , LocationEntity l, DescriptionEntity d " +
     "WHERE i.location.lid = l.lid AND i.description.did = d.did " +
     "AND (i.accPerson LIKE %:acc_per% " +
     "AND i.department LIKE %:department% " +
@@ -185,7 +185,7 @@ List<LogEntity> searchLogs(
     "AND d.type LIKE %:type% " +
     "AND CAST(i.invoiceDate AS STRING) LIKE %:invoice_date% " +
     "AND CAST(i.lifespan AS STRING) LIKE %:lifespan% ) AND CAST(i.isDeleted AS int) = 0")
-public List<ItemsEntity> fetchFilter(@Param("acc_per") String acc_per,
+public List<ItemEntity> fetchFilter(@Param("acc_per") String acc_per,
                                       @Param("department") String department,
                                       @Param("designation") String designation,
                                       @Param("status") String status,
@@ -200,7 +200,7 @@ public List<ItemsEntity> fetchFilter(@Param("acc_per") String acc_per,
                                       @Param("lifespan") String lifespan);
 
 
-    @Query(value="SELECT SUM(totalCost) FROM ItemsEntity i , LocationEntity l, DescriptionEntity d " +
+    @Query(value="SELECT SUM(totalCost) FROM ItemEntity i , LocationEntity l, DescriptionEntity d " +
     "WHERE i.location.lid = l.lid AND i.description.did = d.did " +
     "AND (i.accPerson LIKE %:acc_per% " +
     "AND i.department LIKE %:department% " +

@@ -24,11 +24,20 @@ public class UserService {
         user.setPassword(encryptedPwd);
 		user.setDeleted(false);
 
-        return urepo.save(user);
+        urepo.save(user);
+
+		UserEntity copy = new UserEntity();
+		copy.setUid(user.getUid());
+		copy.setFname(user.getFname());
+		copy.setLname(user.getLname());
+		copy.setUsername(user.getUsername());
+		copy.setType(user.getType());
+
+		return copy;
     }
 
     public List<UserEntity> getAllUsers() {
-        return urepo.findAll();
+        return urepo.findAllUsersWithoutPassword();
     }
 
     @SuppressWarnings("finally")
@@ -54,7 +63,11 @@ public class UserService {
 		} catch (NoSuchElementException ex){
 			throw new NoSuchElementException("user " + uid + " does not exist!");
 		} finally {
-			return urepo.save(user);
+			urepo.save(user);
+
+			UserEntity copy = urepo.findByUsernameWithoutPassword(user.getUsername());
+
+			return copy;
 		}
 	}
 	
@@ -89,24 +102,18 @@ public class UserService {
         }
     }
 
-	public UserEntity loginTest(@RequestBody UserEntity loginData) {
+	public UserEntity login(@RequestBody UserEntity loginData) {
         String username = loginData.getUsername();
         String password = loginData.getPassword();
 
         boolean isValidCredentials = validateUserCredentials(username, password);
 
         UserEntity user = new UserEntity();
-		UserEntity test = new UserEntity();
 
         if (isValidCredentials) {
-            user = urepo.findByUsername(username);
-			test.setUid(user.getUid());
-			test.setFname(user.getFname());
-			test.setLname(user.getLname());
-			test.setUsername(user.getUsername());
-			test.setType(user.getType());
+            user = urepo.findByUsernameWithoutPassword(username);
 
-			return test;
+			return user;
         } else {
             return null;
         }

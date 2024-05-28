@@ -41,7 +41,7 @@ public class LogService {
         Optional<ItemsEntity> optionalItemEntity = irepo.findById(iid);
 
         if(optionalUserEntity.isPresent()) {
-            log.setUser(optionalUserEntity.get());
+            log.setUser(urepo.findByIdWithoutPassword(uid));
         }
         
         if(optionalItemEntity.isPresent()) {

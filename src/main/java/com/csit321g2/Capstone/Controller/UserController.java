@@ -1,6 +1,7 @@
 package com.csit321g2.Capstone.Controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,7 +24,7 @@ public class UserController {
     @Autowired
     UserService userv;
 
-    @PostMapping("/registerUser")
+    @PostMapping("/register")
     public UserEntity registerUser(@RequestBody UserEntity user) {
         return userv.registerUser(user);
     }
@@ -48,7 +49,15 @@ public class UserController {
     }
     
     @PostMapping("/login")
-    public UserEntity loginTest(@RequestBody UserEntity loginData) {
-        return userv.loginTest(loginData);
+    public UserEntity login(@RequestBody UserEntity loginData) {
+        return userv.login(loginData);
+    }
+
+    @PostMapping("/validateCredentials")
+    public boolean validateUserCredentials(@RequestBody Map<String, String> credentials) {
+        String username = credentials.get("username");
+        String password = credentials.get("password");
+
+        return userv.validateUserCredentials(username, password);
     }
 }

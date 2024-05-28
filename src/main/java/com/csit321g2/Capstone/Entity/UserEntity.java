@@ -39,6 +39,15 @@ public class UserEntity {
         this.isDeleted = isDeleted;
     }
 
+    public UserEntity(Long uid, String fname, String lname, String username, String type, Boolean isDeleted) {
+        this.uid = uid;
+        this.fname = fname;
+        this.lname = lname;
+        this.username = username;
+        this.type = type;
+        this.isDeleted = isDeleted;
+    }
+
     public long getUid() {
         return uid;
     }

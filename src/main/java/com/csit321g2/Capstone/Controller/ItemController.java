@@ -136,6 +136,10 @@ public class ItemController {
 		return iserv.fetchSearch(search);
 	}
 
+	@GetMapping("/getByDep")
+	public List<ItemEntity> fetchItemByDepartment(@RequestParam String depa) {
+		return iserv.fetchItemByDepartment(depa);
+	}
 
 	@GetMapping("statusLog")
 	public String fetchStatusLog(@RequestParam String type){

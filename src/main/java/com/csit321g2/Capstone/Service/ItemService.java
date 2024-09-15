@@ -154,6 +154,10 @@ public class ItemService {
 		return irepo.fetchStatusLog(type);
 	}
 
+	public List<ItemEntity>fetchItemByDepartment(String depa){
+		return irepo.fetchItemByDepartment(depa);
+	}
+
 	@SuppressWarnings("finally")
 	public ItemEntity requestItem(int number, long itemId){
 		ItemEntity test = new ItemEntity();

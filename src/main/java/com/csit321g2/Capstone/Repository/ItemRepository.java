@@ -76,6 +76,8 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
     @Query(value="SELECT i.status FROM ItemEntity i WHERE i.iid = :type")
     public String fetchStatusLog(@Param("type") String type);
 
+    @Query(value="SELECT i FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0 AND i.department = :depa")
+    public List<ItemEntity> fetchItemByDepartment(@Param("depa") String depa);
     
       
     @Query(value="UPDATE ItemEntity i SET i.quantity = i.quantity - :number, i.totalCost = i.unitCost * (i.quantity - :number) WHERE i.iid = :itemId")

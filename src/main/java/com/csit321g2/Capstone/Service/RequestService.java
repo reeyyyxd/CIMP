@@ -1,6 +1,7 @@
 package com.csit321g2.Capstone.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -20,6 +21,14 @@ public class RequestService {
 
     @Autowired
     ItemRepository irepo;
+
+    public List<RequestEntity> getPending(){
+        return rrepo.getPending();
+    }
+
+    public List<RequestEntity> getApproved(){
+        return rrepo.getApproved();
+    }
 
     public RequestEntity addRequest(Long iid) {
         RequestEntity request = new RequestEntity();

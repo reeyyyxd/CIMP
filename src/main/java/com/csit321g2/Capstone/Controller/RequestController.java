@@ -28,6 +28,11 @@ public class RequestController {
         return rserv.addRequest(iid);
     }
 
+    @GetMapping("/all")
+    public List<RequestEntity> getAllItems(){
+        return rserv.getAllItems();
+    }
+
     @GetMapping("/getPending")
     public List<RequestEntity> getPending() {
         return rserv.getPending();

@@ -26,6 +26,10 @@ public class RequestService {
         return rrepo.getPending();
     }
 
+    public List<RequestEntity> getAllItems(){
+        return rrepo.findAll();
+    }
+
     public List<RequestEntity> getApproved(){
         return rrepo.getApproved();
     }

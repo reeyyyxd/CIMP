@@ -34,7 +34,7 @@ public class RequestService {
         return rrepo.getApproved();
     }
 
-    public RequestEntity addRequest(Long iid) {
+    public RequestEntity addRequest(Long iid, int quantity) {
         RequestEntity request = new RequestEntity();
         Optional<ItemEntity> optionalItemEntity = irepo.findById(iid);
 
@@ -43,6 +43,7 @@ public class RequestService {
         }
 
         request.setDate_req(LocalDateTime.now());
+        request.setQuantity(quantity);
         request.setStatus("pending");
         return rrepo.save(request);
     }
@@ -50,15 +51,20 @@ public class RequestService {
     @SuppressWarnings("finally")
     public RequestEntity updateStatus(Long rid, String status) {
         RequestEntity dummy = new RequestEntity();
+        ItemEntity dummy2 = new ItemEntity();
 
         try {
             dummy = rrepo.findById(rid).get();
+            dummy2 = irepo.findById(dummy.getItem().getIid()).get();
 
             dummy.setStatus(status);
             dummy.setDate_app(LocalDateTime.now());
+
+            dummy2.setQuantity(dummy2.getQuantity() - dummy.getQuantity());
         } catch (NoSuchElementException ex) {
             throw new NoSuchElementException("Request " + rid + " does not exist!");
         } finally {
+            irepo.save(dummy2);
             return rrepo.save(dummy);
         }
     }

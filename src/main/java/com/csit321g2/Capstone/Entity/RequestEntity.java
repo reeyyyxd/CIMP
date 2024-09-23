@@ -27,28 +27,29 @@ public class RequestEntity {
 
     @JsonFormat(pattern = "MM-dd-yyyy HH:mm:ss")
     private LocalDateTime date_req;
-    //date requested
 
     @JsonFormat(pattern = "MM-dd-yyyy HH:mm:ss")
     private LocalDateTime date_app;
-    //date approved
 
     private String status;
-    //status
+
+    private int quantity;
 
     public RequestEntity() {
     }
 
-    public RequestEntity(ItemEntity item, LocalDateTime date_req, LocalDateTime date_app, String status) {
+    public RequestEntity(ItemEntity item, LocalDateTime date_req, LocalDateTime date_app, String status, int quantity) {
         this.item = item;
         this.date_req = date_req;
         this.date_app = date_app;
         this.status = status;
+        this.quantity = quantity;
     }
 
-    public RequestEntity(ItemEntity item, LocalDateTime date_req) {
+    public RequestEntity(ItemEntity item, LocalDateTime date_req, int quantity) {
         this.item = item;
         this.date_req = date_req;
+        this.quantity = quantity;
     }
 
     public long getRid() {
@@ -91,4 +92,12 @@ public class RequestEntity {
         this.status = status;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+    
 }

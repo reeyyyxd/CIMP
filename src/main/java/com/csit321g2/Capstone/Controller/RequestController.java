@@ -24,8 +24,8 @@ public class RequestController {
     RequestService rserv;
 
     @PostMapping("/add")
-    public RequestEntity addRequest(@RequestParam Long iid) {
-        return rserv.addRequest(iid);
+    public RequestEntity addRequest(@RequestParam Long iid, @RequestParam int quantity) {
+        return rserv.addRequest(iid, quantity);
     }
 
     @GetMapping("/all")

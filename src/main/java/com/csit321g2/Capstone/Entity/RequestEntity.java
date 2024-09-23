@@ -21,7 +21,7 @@ public class RequestEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long rid;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "item_id", referencedColumnName = "propertyTag")
     private ItemEntity item;
 

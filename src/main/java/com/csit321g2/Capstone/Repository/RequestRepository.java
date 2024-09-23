@@ -18,4 +18,7 @@ public interface RequestRepository extends JpaRepository<RequestEntity, Long> {
     @Query(value="SELECT r FROM RequestEntity r WHERE r.status = 'approved'")
     public List<RequestEntity> getApproved();
 
+    @Query(value="SELECT YEAR(r.date_app), MONTH(r.date_app), DATEDIFF(r.date_app, r.date_req) FROM RequestEntity r")
+    public List<Object> getStats();
+
 }

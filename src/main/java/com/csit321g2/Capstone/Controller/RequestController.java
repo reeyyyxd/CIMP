@@ -33,6 +33,12 @@ public class RequestController {
         return rserv.getAllItems();
     }
 
+    @GetMapping("/getStats")
+    public List<Object> getStats() {
+        return rserv.getStats();
+    }
+    
+
     @GetMapping("/getPending")
     public List<RequestEntity> getPending() {
         return rserv.getPending();

@@ -30,6 +30,10 @@ public class RequestService {
         return rrepo.findAll();
     }
 
+    public List<Object> getStats(){
+        return rrepo.getStats();
+    }
+
     public List<RequestEntity> getApproved(){
         return rrepo.getApproved();
     }

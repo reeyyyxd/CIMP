@@ -1,5 +1,9 @@
 package com.csit321g2.Capstone.Entity;
 
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,7 +35,8 @@ public class ItemEntity {
 	
 	private String invoiceNumber;
 	
-	private int invoiceDate;
+	@JsonFormat(pattern = "MM-dd-yyyy")
+	private LocalDate invoiceDate;
 	
 	private String supplier;
 	
@@ -64,7 +69,7 @@ public class ItemEntity {
 	}
 
 	public ItemEntity(int issueOrder, String department, String accPerson, String designation, String invoiceNumber,
-			int invoiceDate, String supplier, int quantity, String unitOfMeasurement, DescriptionEntity description,
+			LocalDate invoiceDate, String supplier, int quantity, String unitOfMeasurement, DescriptionEntity description,
 			float unitCost, float totalCost, LocationEntity location, String status, String lifespan, String remarks, boolean isDeleted) {
 		this.issueOrder = issueOrder;
 		this.department = department;
@@ -133,11 +138,11 @@ public class ItemEntity {
 		this.invoiceNumber = invoiceNumber;
 	}
 
-	public int getInvoiceDate() {
+	public LocalDate getInvoiceDate() {
 		return invoiceDate;
 	}
 
-	public void setInvoiceDate(int invoiceDate) {
+	public void setInvoiceDate(LocalDate invoiceDate) {
 		this.invoiceDate = invoiceDate;
 	}
 

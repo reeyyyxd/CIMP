@@ -35,7 +35,7 @@ public class ItemEntity {
 	
 	private String invoiceNumber;
 	
-	@JsonFormat(pattern = "MM-dd-yyyy")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate invoiceDate;
 	
 	private String supplier;

@@ -1,5 +1,6 @@
 package com.csit321g2.Capstone.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -122,7 +123,7 @@ public class ItemService {
 		return irepo.fetchType();
 	}
 
-	public List<String>fetchInvoiceDate(){
+	public List<LocalDate>fetchInvoiceDate(){
 		return irepo.fetchInvoiceDate();
 	}
 
@@ -220,7 +221,7 @@ public class ItemService {
 	String name,
     String model,
     String type,
-	String invoice_date,
+	LocalDate invoice_date,
 	String lifespan) {
 		return irepo.fetchFilter(acc_per,department,designation,status,uom,supplier,building,room,name,model,type,invoice_date,lifespan);
 	}
@@ -236,7 +237,7 @@ public class ItemService {
 	String name,
     String model,
     String type,
-	String invoice_date,
+	LocalDate invoice_date,
 	String lifespan) {
 		return irepo.fetchSum(acc_per,department,designation,status,uom,supplier,building,room,name,model,type,invoice_date,lifespan);
 	}

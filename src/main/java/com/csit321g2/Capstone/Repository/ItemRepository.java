@@ -1,5 +1,6 @@
 package com.csit321g2.Capstone.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -59,7 +60,7 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
     public List<String> fetchType();
 
     @Query(value="SELECT i.invoiceDate FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
-    public List<String> fetchInvoiceDate();
+    public List<LocalDate> fetchInvoiceDate();
 
     @Query(value="SELECT i.lifespan FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchLifespan();
@@ -185,21 +186,22 @@ List<LogEntity> searchLogs(
     "AND d.name LIKE %:name% " +
     "AND d.model LIKE %:model% " +
     "AND d.type LIKE %:type% " +
-    "AND CAST(i.invoiceDate AS STRING) LIKE %:invoice_date% " +
+    "AND i.invoiceDate = :invoice_date " + // no need for casting
     "AND CAST(i.lifespan AS STRING) LIKE %:lifespan% ) AND CAST(i.isDeleted AS int) = 0")
-public List<ItemEntity> fetchFilter(@Param("acc_per") String acc_per,
-                                      @Param("department") String department,
-                                      @Param("designation") String designation,
-                                      @Param("status") String status,
-                                      @Param("uom") String uom,
-                                      @Param("supplier") String supplier,
-                                      @Param("building") String building,
-                                      @Param("room") String room,
-                                      @Param("name") String name,
-                                      @Param("model") String model,
-                                      @Param("type") String type,
-                                      @Param("invoice_date") String invoice_date,
-                                      @Param("lifespan") String lifespan);
+    public List<ItemEntity> fetchFilter(@Param("acc_per") String acc_per,
+                                          @Param("department") String department,
+                                          @Param("designation") String designation,
+                                          @Param("status") String status,
+                                          @Param("uom") String uom,
+                                          @Param("supplier") String supplier,
+                                          @Param("building") String building,
+                                          @Param("room") String room,
+                                          @Param("name") String name,
+                                          @Param("model") String model,
+                                          @Param("type") String type,
+                                          @Param("invoice_date") LocalDate invoice_date, // keep this as LocalDate
+                                          @Param("lifespan") String lifespan);
+    
 
 
     @Query(value="SELECT SUM(totalCost) FROM ItemEntity i , LocationEntity l, DescriptionEntity d " +
@@ -228,7 +230,7 @@ public List<ItemEntity> fetchFilter(@Param("acc_per") String acc_per,
     @Param("name")String name,
     @Param("model")String model,
     @Param("type") String type,
-    @Param("invoice_date") String invoice_date,
+    @Param("invoice_date") LocalDate invoice_date,
     @Param("lifespan") String lifespan);
 	
 }

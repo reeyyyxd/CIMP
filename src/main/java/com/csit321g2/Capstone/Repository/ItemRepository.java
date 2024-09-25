@@ -18,7 +18,7 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
 	
     //@Query(value="SELECT s FROM AccountEntity s WHERE firstname LIKE %:fname% AND lastname LIKE %:lname%")
 	//public List<AccountEntity> fetchAllCustom(@Param("fname")String fname,@Param("lname")String lname);
-    @Query(value="SELECT i.department, COUNT(i) FROM ItemEntity i GROUP BY i.department")
+    @Query(value="SELECT i.department, COUNT(i) FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0 GROUP BY i.department")
     public List<Object> getStats2();
 
 

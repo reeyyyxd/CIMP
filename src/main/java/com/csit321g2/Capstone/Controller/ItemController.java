@@ -32,6 +32,11 @@ public class ItemController {
 		return iserv.getItemDash();
 	}
 
+	@GetMapping("/getStats2")
+    public List<Object> getStats2() {
+        return iserv.getStats2();
+    }
+
 	@GetMapping("/logDash")
 	public List<ItemEntity> getLogDash(){
 		return iserv.getLogDash();

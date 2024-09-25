@@ -20,6 +20,10 @@ public class ItemService {
 	public List<ItemEntity> getItemDash(){
 		return irepo.getItemDash();
 	}
+
+	public List<Object> getStats2(){
+        return irepo.getStats2();
+    }
 	public List<ItemEntity> getLogDash(){
 		return irepo.getItemDash();
 	}

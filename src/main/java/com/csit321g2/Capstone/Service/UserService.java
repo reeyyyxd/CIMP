@@ -5,6 +5,9 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +26,7 @@ public class UserService {
         String encryptedPwd = bcrypt.encode(user.getPassword());
         user.setPassword(encryptedPwd);
 		user.setDeleted(false);
-
+		user.setType(user.getType().toLowerCase());
         urepo.save(user);
 
 		UserEntity copy = new UserEntity();
@@ -97,25 +100,23 @@ public class UserService {
         
         if (user != null && bcrypt.matches(password, user.getPassword())) {
             return true;
-        } else {
-            return false;
         }
+
+		return false;
     }
 
-	public UserEntity login(@RequestBody UserEntity loginData) {
+	public ResponseEntity<UserEntity> login(@RequestBody UserEntity loginData) {
         String username = loginData.getUsername();
         String password = loginData.getPassword();
 
         boolean isValidCredentials = validateUserCredentials(username, password);
 
-        UserEntity user = new UserEntity();
-
         if (isValidCredentials) {
-            user = urepo.findByUsernameWithoutPassword(username);
+            UserEntity user = urepo.findByUsernameWithoutPassword(username);
 
-			return user;
+			return ResponseEntity.ok(user);
         } else {
-            return null;
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 

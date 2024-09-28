@@ -186,35 +186,35 @@ public class ItemController {
 	
 
 	@GetMapping("/filter")
-	public List<ItemEntity> fetchFilter(@RequestParam String acc_per, 
-	@RequestParam String department,
-    @RequestParam String designation,
-    @RequestParam String status,
-    @RequestParam String uom,
-    @RequestParam String supplier,
-    @RequestParam String building,
-    @RequestParam String room,
-    @RequestParam String name,
-    @RequestParam String model,
-    @RequestParam String type,
-	@RequestParam LocalDate invoice_date,
-	@RequestParam String lifespan) {
+	public List<ItemEntity> fetchFilter(@RequestParam(required = false) String acc_per, 
+	@RequestParam(required = false) String department,
+    @RequestParam(required = false) String designation,
+    @RequestParam(required = false) String status,
+    @RequestParam(required = false) String uom,
+    @RequestParam(required = false) String supplier,
+    @RequestParam(required = false) String building,
+    @RequestParam(required = false) String room,
+    @RequestParam(required = false) String name,
+    @RequestParam(required = false) String model,
+    @RequestParam(required = false) String type,
+	@RequestParam(required = false) String invoice_date,
+	@RequestParam(required = false) String lifespan) {
 		return iserv.fetchFilter(acc_per,department,designation,status,uom,supplier,building,room,name,model,type,invoice_date,lifespan);
 	}
 
 	@GetMapping("/sum")
-	public long fetchSum(@RequestParam String acc_per, 
-	@RequestParam String department,
-    @RequestParam String designation,
-    @RequestParam String status,
-    @RequestParam String uom,
-    @RequestParam String supplier,
-    @RequestParam String building,
-    @RequestParam String room,
-    @RequestParam String name,
-    @RequestParam String model,
-    @RequestParam String type,
-	@RequestParam LocalDate invoice_date,
+	public Long fetchSum(@RequestParam(required = false) String acc_per, 
+	@RequestParam(required = false) String department,
+    @RequestParam(required = false) String designation,
+    @RequestParam(required = false) String status,
+    @RequestParam(required = false) String uom,
+    @RequestParam(required = false) String supplier,
+    @RequestParam(required = false) String building,
+    @RequestParam(required = false) String room,
+    @RequestParam(required = false) String name,
+    @RequestParam(required = false) String model,
+    @RequestParam(required = false) String type,
+	@RequestParam(required = false) String invoice_date,
 	@RequestParam String lifespan) {
 		return iserv.fetchSum(acc_per,department,designation,status,uom,supplier,building,room,name,model,type,invoice_date,lifespan);
 	}

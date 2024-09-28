@@ -225,12 +225,15 @@ public class ItemService {
 	String name,
     String model,
     String type,
-	LocalDate invoice_date,
+	String invoice_date,
 	String lifespan) {
-		return irepo.fetchFilter(acc_per,department,designation,status,uom,supplier,building,room,name,model,type,invoice_date,lifespan);
+		LocalDate localInvoiceDate = (invoice_date != null && !invoice_date.isEmpty()) 
+		? LocalDate.parse(invoice_date) 
+		: null;
+		return irepo.fetchFilter(acc_per, department, designation, status, uom, supplier, building, room, name, model, type, localInvoiceDate, lifespan);
 	}
 
-	public long fetchSum(String acc_per,
+	public Long fetchSum(String acc_per,
 	String department,
     String designation,
     String status,
@@ -241,9 +244,12 @@ public class ItemService {
 	String name,
     String model,
     String type,
-	LocalDate invoice_date,
+	String invoice_date,
 	String lifespan) {
-		return irepo.fetchSum(acc_per,department,designation,status,uom,supplier,building,room,name,model,type,invoice_date,lifespan);
+		LocalDate localInvoiceDate = (invoice_date != null && !invoice_date.isEmpty()) 
+		? LocalDate.parse(invoice_date) 
+		: null;
+		return irepo.fetchSum(acc_per, department, designation, status, uom, supplier, building, room, name, model, type, localInvoiceDate, lifespan);
 	}
 
 }

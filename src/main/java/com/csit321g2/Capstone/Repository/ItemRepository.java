@@ -157,11 +157,6 @@ List<LogEntity> searchLogs(
     @Param("bef") String bef,
     @Param("aft") String aft);
 
-
-
-    
-
-
     @Query(value="SELECT i,l,d FROM ItemEntity i , LocationEntity l, DescriptionEntity d " +
     "WHERE i.location.lid = l.lid AND i.description.did = d.did " +
     "AND (CAST(i.iid AS STRING) LIKE %:search% " +  
@@ -175,7 +170,7 @@ List<LogEntity> searchLogs(
     "AND (CAST(i.iid AS STRING) = %:info%)")
     public ItemEntity fetchFullInfo(@Param("info") String info);
 
-    @Query(value="SELECT i,l,d FROM ItemEntity i , LocationEntity l, DescriptionEntity d " +
+    @Query(value = "SELECT i, l, d FROM ItemEntity i, LocationEntity l, DescriptionEntity d " +
     "WHERE i.location.lid = l.lid AND i.description.did = d.did " +
     "AND (i.accPerson LIKE %:acc_per% " +
     "AND i.department LIKE %:department% " +
@@ -188,8 +183,9 @@ List<LogEntity> searchLogs(
     "AND d.name LIKE %:name% " +
     "AND d.model LIKE %:model% " +
     "AND d.type LIKE %:type% " +
-    "AND i.invoiceDate = :invoice_date " + // no need for casting
-    "AND CAST(i.lifespan AS STRING) LIKE %:lifespan% ) AND CAST(i.isDeleted AS int) = 0")
+    "AND (:invoice_date IS NULL OR i.invoiceDate = :invoice_date) " +
+    "AND CAST(i.lifespan AS STRING) LIKE %:lifespan% ) " +
+    "AND CAST(i.isDeleted AS int) = 0")
     public List<ItemEntity> fetchFilter(@Param("acc_per") String acc_per,
                                           @Param("department") String department,
                                           @Param("designation") String designation,
@@ -204,8 +200,6 @@ List<LogEntity> searchLogs(
                                           @Param("invoice_date") LocalDate invoice_date, // keep this as LocalDate
                                           @Param("lifespan") String lifespan);
     
-
-
     @Query(value="SELECT SUM(totalCost) FROM ItemEntity i , LocationEntity l, DescriptionEntity d " +
     "WHERE i.location.lid = l.lid AND i.description.did = d.did " +
     "AND (i.accPerson LIKE %:acc_per% " +
@@ -219,9 +213,9 @@ List<LogEntity> searchLogs(
     "AND d.name LIKE %:name% " +
     "AND d.model LIKE %:model% " +
     "AND d.type LIKE %:type% " +
-    "AND CAST(i.invoiceDate AS STRING) LIKE %:invoice_date% " +
+    "AND (:invoice_date IS NULL OR i.invoiceDate = :invoice_date) " +
     "AND CAST(i.lifespan AS STRING) LIKE %:lifespan% ) AND CAST(i.isDeleted AS int) = 0")
-    public long fetchSum(@Param("acc_per")String acc_per,
+    public Long fetchSum(@Param("acc_per")String acc_per,
     @Param("department")String department,
     @Param("designation")String designation,
     @Param("status")String status,

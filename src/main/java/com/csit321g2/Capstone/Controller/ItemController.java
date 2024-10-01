@@ -43,8 +43,8 @@ public class ItemController {
 	}
 	
 	@PostMapping("/insertItem")
-	public ItemEntity insertItem(@RequestBody ItemEntity item) {
-		return iserv.insertItem(item);
+	public ItemEntity insertItem(@RequestBody ItemEntity item, @RequestParam String fullName) {
+		return iserv.insertItem(item, fullName);
 	}
 	
 	@GetMapping("/getAllItems")
@@ -53,8 +53,8 @@ public class ItemController {
 	}
 	
 	@PutMapping("/updateItem/{propertyTag}")
-	public ItemEntity updateItem(@PathVariable Long propertyTag, @RequestBody ItemEntity newItemDetails) {
-		return iserv.updateItem(propertyTag, newItemDetails);
+	public ItemEntity updateItem(@PathVariable Long propertyTag, @RequestBody ItemEntity newItemDetails, @RequestParam String fullName) {
+		return iserv.updateItem(propertyTag, newItemDetails, fullName);
 	}
 	
 	@DeleteMapping("/deleteItem/{propertyTag}")
@@ -219,4 +219,9 @@ public class ItemController {
 		return iserv.fetchSum(acc_per,department,designation,status,uom,supplier,building,room,name,model,type,invoice_date,lifespan);
 	}
 	
+	@GetMapping("/accPerson/{uid}")
+    public List<ItemEntity> getItemsByAccPersonUid(@PathVariable Long uid) {
+        return iserv.getItemsByAccPersonUid(uid);
+    }
+
 }

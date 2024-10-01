@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -21,15 +22,19 @@ public class ItemEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "propertyTag")
-	private long iid;
+	private Long iid;
 	
 	@Column(name = "issueOrderNumber")
 	private int issueOrder;
 	
 	private String department;
 	
-	@Column(name = "accountablePerson")
-	private String accPerson;
+	// @Column(name = "accountablePerson")
+	// private String accPerson;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "acc_per_id", referencedColumnName = "uid")
+	private UserEntity accPerson;
 	
 	private String designation;
 	
@@ -68,9 +73,10 @@ public class ItemEntity {
 	public ItemEntity() {
 	}
 
-	public ItemEntity(int issueOrder, String department, String accPerson, String designation, String invoiceNumber,
-			LocalDate invoiceDate, String supplier, int quantity, String unitOfMeasurement, DescriptionEntity description,
-			float unitCost, float totalCost, LocationEntity location, String status, String lifespan, String remarks, boolean isDeleted) {
+	public ItemEntity(int issueOrder, String department, UserEntity accPerson, String designation, String invoiceNumber,
+			LocalDate invoiceDate, String supplier, int quantity, String unitOfMeasurement,
+			DescriptionEntity description, float unitCost, float totalCost, LocationEntity location, String status,
+			String lifespan, String remarks, boolean isDeleted) {
 		this.issueOrder = issueOrder;
 		this.department = department;
 		this.accPerson = accPerson;
@@ -90,11 +96,11 @@ public class ItemEntity {
 		this.isDeleted = isDeleted;
 	}
 
-	public long getIid() {
+	public Long getIid() {
 		return iid;
 	}
 
-	public void setIid(long iid) {
+	public void setIid(Long iid) {
 		this.iid = iid;
 	}
 
@@ -114,11 +120,11 @@ public class ItemEntity {
 		this.department = department;
 	}
 
-	public String getAccPerson() {
+	public UserEntity getAccPerson() {
 		return accPerson;
 	}
 
-	public void setAccPerson(String accPerson) {
+	public void setAccPerson(UserEntity accPerson) {
 		this.accPerson = accPerson;
 	}
 
@@ -234,5 +240,4 @@ public class ItemEntity {
 		this.isDeleted = isDeleted;
 	}
 
-		
 }

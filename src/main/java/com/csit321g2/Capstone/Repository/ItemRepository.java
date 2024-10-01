@@ -16,6 +16,8 @@ import com.csit321g2.Capstone.Entity.LogEntity;
 @Repository
 public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
 	
+    List<ItemEntity> findByAccPersonUid(Long uid);
+    
     //@Query(value="SELECT s FROM AccountEntity s WHERE firstname LIKE %:fname% AND lastname LIKE %:lname%")
 	//public List<AccountEntity> fetchAllCustom(@Param("fname")String fname,@Param("lname")String lname);
     @Query(value="SELECT i.department, COUNT(i) FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0 GROUP BY i.department")
@@ -28,8 +30,11 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
     @Query(value="SELECT l FROM LogEntity l, ItemEntity i WHERE l.logid = i.iid AND CAST(i.isDeleted AS int) = 0 ORDER BY l.logid DESC LIMIT 10")
     public List<ItemEntity> getLogDash();
 
-    @Query(value="SELECT i.accPerson FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
-    public List<String> fetchAccPer();
+    // @Query(value="SELECT i.accPerson FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
+    // public List<String> fetchAccPer();
+
+    @Query(value = "SELECT CONCAT(i.accPerson.fname, ' ', i.accPerson.lname) FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
+    public List<String> fetchAccPer(); // Returns List<String> with concatenated names
 
     @Query(value="SELECT i.department FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchDep();
@@ -172,7 +177,8 @@ List<LogEntity> searchLogs(
 
     @Query(value = "SELECT i, l, d FROM ItemEntity i, LocationEntity l, DescriptionEntity d " +
     "WHERE i.location.lid = l.lid AND i.description.did = d.did " +
-    "AND (i.accPerson LIKE %:acc_per% " +
+    // "AND (i.accPerson LIKE %:acc_per% " +
+    "AND (CONCAT(i.accPerson.fname, ' ', i.accPerson.lname) LIKE %:acc_per% " +
     "AND i.department LIKE %:department% " +
     "AND i.designation LIKE %:designation% " +
     "AND i.status LIKE %:status% " +
@@ -202,7 +208,8 @@ List<LogEntity> searchLogs(
     
     @Query(value="SELECT SUM(totalCost) FROM ItemEntity i , LocationEntity l, DescriptionEntity d " +
     "WHERE i.location.lid = l.lid AND i.description.did = d.did " +
-    "AND (i.accPerson LIKE %:acc_per% " +
+    // "AND (i.accPerson LIKE %:acc_per% " +
+    "AND (CONCAT(i.accPerson.fname, ' ', i.accPerson.lname) LIKE %:acc_per% " +
     "AND i.department LIKE %:department% " +
     "AND i.designation LIKE %:designation% " +
     "AND i.status LIKE %:status% " +

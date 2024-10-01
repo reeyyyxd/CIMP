@@ -112,11 +112,15 @@ public class UserService {
 
         if (isValidCredentials) {
             UserEntity user = urepo.findByUsernameWithoutPassword(username);
-
+			
 			return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
+	public List<String> getFullNamesForAccPerson() {
+		return urepo.findFullNameByAccPersonType();
+	}
 
 }

@@ -35,6 +35,11 @@ public class UserController {
         return userv.getAllUsers();
     }
 
+    @GetMapping("/fetchAccPers")
+    public List<String> getFullNamesForAccPerson() {
+        return userv.getFullNamesForAccPerson();
+    }
+
     @PutMapping("/updateUser/{uid}")
     public UserEntity updateUser(@PathVariable int uid, @RequestBody UserEntity newUserDetails) {
         return userv.updateUser(uid, newUserDetails);

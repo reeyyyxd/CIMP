@@ -3,19 +3,25 @@ package com.csit321g2.Capstone.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.csit321g2.Capstone.Entity.ItemEntity;
 import com.csit321g2.Capstone.Entity.LogEntity;
+import com.csit321g2.Capstone.Entity.UserEntity;
 import com.csit321g2.Capstone.Repository.ItemRepository;
+import com.csit321g2.Capstone.Repository.UserRepository;
 
 @Service
 public class ItemService {
 	
 	@Autowired
 	ItemRepository irepo;
+
+	@Autowired
+	UserRepository urepo;
 
 	public List<ItemEntity> getItemDash(){
 		return irepo.getItemDash();
@@ -28,8 +34,16 @@ public class ItemService {
 		return irepo.getItemDash();
 	}
 	
-	public ItemEntity insertItem(ItemEntity item) {
+	public ItemEntity insertItem(ItemEntity item, String fullName) {
 		item.setDeleted(false);
+
+		Optional<UserEntity> userOpt = urepo.findByFullName(fullName);
+		if (userOpt.isPresent()) {
+			item.setAccPerson(userOpt.get());
+		} else {
+			throw new RuntimeException("User not found with name: " + fullName);
+    	}
+
 		return irepo.save(item);
 	}
 	
@@ -38,16 +52,22 @@ public class ItemService {
 	}
 
 	@SuppressWarnings("finally")
-	public ItemEntity updateItem(Long propertyTag, ItemEntity newItemDetails) {
+	public ItemEntity updateItem(Long propertyTag, ItemEntity newItemDetails, String fullName) {
 		ItemEntity item = new ItemEntity();
 		try {
 			//search id b4 update
 			item = irepo.findById(propertyTag).get();
+
+			Optional<UserEntity> userOpt = urepo.findByFullName(fullName);
+			if (userOpt.isPresent()) {
+				item.setAccPerson(userOpt.get());
+			} else {
+				throw new RuntimeException("User not found with name: " + fullName);
+			}
 			
 			//update
 			item.setIssueOrder(newItemDetails.getIssueOrder());
 			item.setDepartment(newItemDetails.getDepartment());
-			item.setAccPerson(newItemDetails.getAccPerson());
 			item.setDesignation(newItemDetails.getDesignation());
 			item.setInvoiceNumber(newItemDetails.getInvoiceNumber());
 			item.setInvoiceDate(newItemDetails.getInvoiceDate());
@@ -251,5 +271,9 @@ public class ItemService {
 		: null;
 		return irepo.fetchSum(acc_per, department, designation, status, uom, supplier, building, room, name, model, type, localInvoiceDate, lifespan);
 	}
+
+	public List<ItemEntity> getItemsByAccPersonUid(Long uid) {
+        return irepo.findByAccPersonUid(uid);
+    }
 
 }

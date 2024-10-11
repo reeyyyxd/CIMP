@@ -41,8 +41,7 @@ public class ItemService {
 		if (userOpt.isPresent()) {
 			item.setAccPerson(userOpt.get());
 		} else {
-			UserEntity blank = new UserEntity("", "", "", "", "" , false);
-			item.setAccPerson(blank);
+			item.setAccPerson(null);
     	}
 
 		return irepo.save(item);
@@ -63,7 +62,7 @@ public class ItemService {
 			if (userOpt.isPresent()) {
 				item.setAccPerson(userOpt.get());
 			} else {
-				throw new RuntimeException("User not found with name: " + fullName);
+				item.setAccPerson(null);
 			}
 			
 			//update

@@ -3,6 +3,7 @@ package com.csit321g2.Capstone.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.csit321g2.Capstone.Entity.RequestEntity;
 import com.csit321g2.Capstone.Service.RequestService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
@@ -24,8 +26,8 @@ public class RequestController {
     RequestService rserv;
 
     @PostMapping("/add")
-    public RequestEntity addRequest(@RequestParam Long iid, @RequestParam int quantity) {
-        return rserv.addRequest(iid, quantity);
+    public RequestEntity addRequest(@RequestParam Long iid) {
+        return rserv.addRequest(iid);
     }
 
     @GetMapping("/all")
@@ -53,5 +55,20 @@ public class RequestController {
     @PutMapping("/update")
     public RequestEntity updateStatus(@RequestParam Long rid, @RequestParam String status) {
         return rserv.updateStatus(rid, status);
+    }
+
+    @GetMapping("/user/{uid}")
+    public ResponseEntity<List<RequestEntity>> getRequestsByUser(@PathVariable Long uid) {
+        List<RequestEntity> requests = rserv.getRequestsByUser(uid);
+        return ResponseEntity.ok(requests);
+    }
+
+    @GetMapping("/byItemStatus")
+    public ResponseEntity<List<RequestEntity>> getRequestsByItemStatus(@RequestParam String status) {
+        List<RequestEntity> requests = rserv.getRequestsByItemStatus(status);
+        if (requests.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(requests);
     }
 }

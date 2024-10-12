@@ -28,9 +28,6 @@ public class ItemEntity {
 	private int issueOrder;
 	
 	private String department;
-	
-	// @Column(name = "accountablePerson")
-	// private String accPerson;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "acc_per_id", referencedColumnName = "uid")

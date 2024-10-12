@@ -4,13 +4,12 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,7 +20,7 @@ public class RequestEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long rid;
 
-    @OneToOne (cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "item_id", referencedColumnName = "propertyTag")
     private ItemEntity item;
 
@@ -33,23 +32,19 @@ public class RequestEntity {
 
     private String status;
 
-    private int quantity;
-
     public RequestEntity() {
     }
 
-    public RequestEntity(ItemEntity item, LocalDateTime date_req, LocalDateTime date_app, String status, int quantity) {
+    public RequestEntity(ItemEntity item, LocalDateTime date_req, LocalDateTime date_app, String status) {
         this.item = item;
         this.date_req = date_req;
         this.date_app = date_app;
         this.status = status;
-        this.quantity = quantity;
     }
 
-    public RequestEntity(ItemEntity item, LocalDateTime date_req, int quantity) {
+    public RequestEntity(ItemEntity item, LocalDateTime date_req) {
         this.item = item;
         this.date_req = date_req;
-        this.quantity = quantity;
     }
 
     public long getRid() {
@@ -90,14 +85,6 @@ public class RequestEntity {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
     
 }

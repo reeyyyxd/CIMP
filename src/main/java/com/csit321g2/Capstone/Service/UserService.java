@@ -56,7 +56,7 @@ public class UserService {
 			user.setFname(newuserDetails.getFname());
 			user.setLname(newuserDetails.getLname());
 			user.setUsername(newuserDetails.getUsername());
-
+			user.setType(newuserDetails.getType());
 			if(newuserDetails.getPassword() != null) {
 				String encryptedPwd = bcrypt.encode(newuserDetails.getPassword());
 				user.setPassword(encryptedPwd);

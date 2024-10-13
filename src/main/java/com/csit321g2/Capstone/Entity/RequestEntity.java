@@ -8,8 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,10 +18,6 @@ public class RequestEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long rid;
 
-    @ManyToOne
-    @JoinColumn(name = "item_id", referencedColumnName = "propertyTag")
-    private ItemEntity item;
-
     @JsonFormat(pattern = "MM-dd-yyyy HH:mm:ss")
     private LocalDateTime date_req;
 
@@ -32,19 +26,37 @@ public class RequestEntity {
 
     private String status;
 
+    private String reason;
+
+    private Long itemAccPerId;
+    private Long itemId;
+    private String itemName;
+    private int itemQuantity;
+    private String itemUnitOfMeasurement;
+    private float itemTotalCost;
+    private String itemStatus;
+    private String itemModel;
+    private String itemSerialNumber;
+
     public RequestEntity() {
     }
 
-    public RequestEntity(ItemEntity item, LocalDateTime date_req, LocalDateTime date_app, String status) {
-        this.item = item;
+    public RequestEntity(LocalDateTime date_req, LocalDateTime date_app, String status, String reason,
+            Long itemAccPerId, Long itemId, String itemName, int itemQuantity, String itemUnitOfMeasurement,
+            float itemTotalCost, String itemStatus, String itemModel, String itemSerialNumber) {
         this.date_req = date_req;
         this.date_app = date_app;
         this.status = status;
-    }
-
-    public RequestEntity(ItemEntity item, LocalDateTime date_req) {
-        this.item = item;
-        this.date_req = date_req;
+        this.reason = reason;
+        this.itemAccPerId = itemAccPerId;
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.itemQuantity = itemQuantity;
+        this.itemUnitOfMeasurement = itemUnitOfMeasurement;
+        this.itemTotalCost = itemTotalCost;
+        this.itemStatus = itemStatus;
+        this.itemModel = itemModel;
+        this.itemSerialNumber = itemSerialNumber;
     }
 
     public long getRid() {
@@ -53,14 +65,6 @@ public class RequestEntity {
 
     public void setRid(long rid) {
         this.rid = rid;
-    }
-
-    public ItemEntity getItem() {
-        return item;
-    }
-
-    public void setItem(ItemEntity item) {
-        this.item = item;
     }
 
     public LocalDateTime getDate_req() {
@@ -86,5 +90,85 @@ public class RequestEntity {
     public void setStatus(String status) {
         this.status = status;
     }
-    
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public Long getItemAccPerId() {
+        return itemAccPerId;
+    }
+
+    public void setItemAccPerId(Long itemAccPerId) {
+        this.itemAccPerId = itemAccPerId;
+    }
+
+    public Long getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public int getItemQuantity() {
+        return itemQuantity;
+    }
+
+    public void setItemQuantity(int itemQuantity) {
+        this.itemQuantity = itemQuantity;
+    }
+
+    public String getItemUnitOfMeasurement() {
+        return itemUnitOfMeasurement;
+    }
+
+    public void setItemUnitOfMeasurement(String itemUnitOfMeasurement) {
+        this.itemUnitOfMeasurement = itemUnitOfMeasurement;
+    }
+
+    public float getItemTotalCost() {
+        return itemTotalCost;
+    }
+
+    public void setItemTotalCost(float itemTotalCost) {
+        this.itemTotalCost = itemTotalCost;
+    }
+
+    public String getItemStatus() {
+        return itemStatus;
+    }
+
+    public void setItemStatus(String itemStatus) {
+        this.itemStatus = itemStatus;
+    }
+
+    public String getItemModel() {
+        return itemModel;
+    }
+
+    public void setItemModel(String itemModel) {
+        this.itemModel = itemModel;
+    }
+
+    public String getItemSerialNumber() {
+        return itemSerialNumber;
+    }
+
+    public void setItemSerialNumber(String itemSerialNumber) {
+        this.itemSerialNumber = itemSerialNumber;
+    }
+
 }

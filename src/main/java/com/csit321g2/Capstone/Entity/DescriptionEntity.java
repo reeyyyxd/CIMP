@@ -78,5 +78,5 @@ public class DescriptionEntity {
     public void setOther(String other) {
         this.other = other;
     }
-     
+
 }

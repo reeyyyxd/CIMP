@@ -3,7 +3,6 @@ package com.csit321g2.Capstone.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +11,6 @@ import com.csit321g2.Capstone.Entity.ItemEntity;
 import com.csit321g2.Capstone.Entity.RequestEntity;
 import com.csit321g2.Capstone.Repository.ItemRepository;
 import com.csit321g2.Capstone.Repository.RequestRepository;
-
-import jakarta.transaction.Transactional;
 
 @Service
 public class RequestService {
@@ -42,15 +39,91 @@ public class RequestService {
 
     public RequestEntity addRequest(Long iid) {
         RequestEntity request = new RequestEntity();
-        Optional<ItemEntity> optionalItemEntity = irepo.findById(iid);
 
-        if(optionalItemEntity.isPresent()) {
-            request.setItem(optionalItemEntity.get());
-        }
+        ItemEntity item = irepo.findById(iid)
+                    .orElseThrow(() -> new RuntimeException("Item not found."));
+
+        request.setItemId(item.getIid());
+        request.setItemAccPerId(item.getAccPerson().getUid());
+        request.setItemModel(item.getDescription().getModel());
+        request.setItemName(item.getDescription().getName());
+        request.setItemQuantity(item.getQuantity());
+        request.setItemSerialNumber(item.getDescription().getSerialNumber());
+        request.setItemStatus(item.getStatus());
+        request.setItemTotalCost(item.getTotalCost());
+        request.setItemUnitOfMeasurement(item.getUnitOfMeasurement());
 
         request.setDate_req(LocalDateTime.now());
-        // request.setQuantity(quantity);
-        request.setStatus("pending");
+        request.setStatus("PENDING");
+        return rrepo.save(request);
+    }
+
+    public RequestEntity approveRequest(Long rid) {
+        RequestEntity request = rrepo.findById(rid)
+                    .orElseThrow(() -> new RuntimeException("Request not found."));
+    
+        request.setStatus("APPROVED");
+        request.setDate_app(LocalDateTime.now());
+    
+        ItemEntity item = irepo.findById(request.getItemId())
+                    .orElseThrow(() -> new RuntimeException("Item not found."));
+        item.setStatus("ASSIGNED");
+        irepo.save(item);
+
+        request.setItemStatus("ASSIGNED");
+        
+        return rrepo.save(request);
+    }
+
+    public RequestEntity rejectRequest(Long rid, String reason) {
+        RequestEntity request = rrepo.findById(rid)
+                    .orElseThrow(() -> new RuntimeException("Request not found."));
+    
+        request.setStatus("REJECTED");
+        request.setItemStatus("REJECTED");
+        request.setReason(reason);
+
+        ItemEntity item = irepo.findById(request.getItemId())
+                    .orElseThrow(() -> new RuntimeException("Item not found."));
+        item.setAccPerson(null);
+        item.setDepartment(null);
+        item.setDesignation(null);
+        item.setStatus("TO BE ASSIGNED");
+        irepo.save(item);
+    
+        return rrepo.save(request);
+    }
+
+    public RequestEntity returnItem(Long rid) {
+        RequestEntity request = rrepo.findById(rid)
+                    .orElseThrow(() -> new RuntimeException("Request not found."));
+    
+        request.setStatus("TO BE RETURNED");
+        request.setItemStatus("TO BE RETURNED");
+    
+        ItemEntity item = irepo.findById(request.getItemId())
+                    .orElseThrow(() -> new RuntimeException("Item not found."));
+        item.setStatus("TO BE RETURNED");
+        irepo.save(item);
+        
+        return rrepo.save(request);
+    }
+
+    public RequestEntity approveReturn(Long rid) {
+        RequestEntity request = rrepo.findById(rid)
+                    .orElseThrow(() -> new RuntimeException("Request not found."));
+    
+        request.setStatus("RETURNED");
+        request.setItemStatus("RETURNED");
+
+        ItemEntity item = irepo.findById(request.getItemId())
+                    .orElseThrow(() -> new RuntimeException("Item not found."));
+        item.setAccPerson(null);
+        item.setDepartment(null);
+        item.setDesignation(null);
+        item.setStatus("TO BE ASSIGNED");
+        irepo.save(item);
+    
         return rrepo.save(request);
     }
 
@@ -59,7 +132,7 @@ public class RequestService {
         ItemEntity dummy2 = new ItemEntity();
         try {
             dummy = rrepo.findById(rid).get();
-            dummy2 = irepo.findById(dummy.getItem().getIid()).get();
+            // dummy2 = irepo.findById(dummy.getItem().getIid()).get();
 
             dummy.setStatus(status);
             dummy.setDate_app(LocalDateTime.now());
@@ -82,7 +155,6 @@ public class RequestService {
 
             dummy2.setStatus(dummyStatus);
 
-            // dummy2.setQuantity(dummy2.getQuantity() - dummy.getQuantity());
         } catch (NoSuchElementException ex) {
             throw new NoSuchElementException("Request " + rid + " does not exist!");
         } 
@@ -91,11 +163,11 @@ public class RequestService {
     }
 
     public List<RequestEntity> getRequestsByUser(Long uid) {
-        return rrepo.findByItem_AccPerson_Uid(uid);
+        return rrepo.findByItemAccPerId(uid);
     }
 
     public List<RequestEntity> getRequestsByItemStatus(String status) {
-        return rrepo.findRequestsByItemStatus(status);
+        return rrepo.findByItemStatus(status);
     }
 
 }

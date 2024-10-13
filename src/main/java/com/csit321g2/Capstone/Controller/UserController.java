@@ -66,4 +66,11 @@ public class UserController {
 
         return userv.validateUserCredentials(username, password);
     }
+
+    @GetMapping("/{uid}/full-name")
+    public ResponseEntity<String> getFullName(@PathVariable Long uid) {
+        String fullName = userv.getFullNameByUid(uid);
+        return ResponseEntity.ok(fullName);
+    }
+    
 }

@@ -26,7 +26,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query("SELECT u FROM UserEntity u WHERE CONCAT(u.fname, ' ', u.lname) = :fullName")
     Optional<UserEntity> findByFullName(@Param("fullName") String fullName);
     
-    @Query("SELECT CONCAT(u.fname, ' ', u.lname) FROM UserEntity u WHERE u.type = 'acc_person'")
+    @Query("SELECT CONCAT(u.fname, ' ', u.lname) FROM UserEntity u WHERE u.type = 'acc_person' AND u.isDeleted = false")
     List<String> findFullNameByAccPersonType();
+
+    @Query("SELECT CONCAT(u.fname, ' ', u.lname) FROM UserEntity u WHERE u.uid = :uid AND u.isDeleted = false")
+    String findFullNameByUid(@Param("uid") Long uid);
 
 }

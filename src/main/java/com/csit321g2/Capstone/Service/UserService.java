@@ -126,4 +126,7 @@ public class UserService {
 		return urepo.findFullNameByAccPersonType();
 	}
 
+	public String getFullNameByUid(Long uid) {
+        return urepo.findFullNameByUid(uid);
+    }
 }

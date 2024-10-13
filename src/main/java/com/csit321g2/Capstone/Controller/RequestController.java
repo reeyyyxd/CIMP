@@ -30,6 +30,30 @@ public class RequestController {
         return rserv.addRequest(iid);
     }
 
+    @PutMapping("/approve/{rid}")
+    public ResponseEntity<RequestEntity> approveRequest(@PathVariable Long rid) {
+        RequestEntity approvedRequest = rserv.approveRequest(rid);
+        return ResponseEntity.ok(approvedRequest);
+    }
+
+    @PutMapping("/reject/{rid}")
+    public ResponseEntity<RequestEntity> rejectRequest(@PathVariable Long rid, @RequestParam String reason) {
+        RequestEntity rejectedRequest = rserv.rejectRequest(rid, reason);
+        return ResponseEntity.ok(rejectedRequest);
+    }
+
+    @PutMapping("/return/{rid}")
+    public ResponseEntity<RequestEntity> returnItem(@PathVariable Long rid) {
+        RequestEntity returnedRequest = rserv.returnItem(rid);
+        return ResponseEntity.ok(returnedRequest);
+    }
+
+    @PutMapping("/approve-return/{rid}")
+    public ResponseEntity<RequestEntity> approveReturn(@PathVariable Long rid) {
+        RequestEntity approvedReturnRequest = rserv.approveReturn(rid);
+        return ResponseEntity.ok(approvedReturnRequest);
+    }
+
     @GetMapping("/all")
     public List<RequestEntity> getAllItems(){
         return rserv.getAllItems();

@@ -1,6 +1,7 @@
 package com.csit321g2.Capstone.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -15,6 +16,7 @@ import com.csit321g2.Capstone.Entity.UserEntity;
 import com.csit321g2.Capstone.Repository.ItemRepository;
 import com.csit321g2.Capstone.Repository.ItemRepositoryCustom;
 import com.csit321g2.Capstone.Repository.UserRepository;
+import java.util.Collections;
 
 @Service
 public class ItemService {
@@ -53,8 +55,11 @@ public class ItemService {
 	}
 	
 	public List<ItemEntity> getAllItems() {
-		return irepo.findAll();
+    List<ItemEntity> items = new ArrayList<>(irepo.findAll());  // Creates a copy of the list
+    Collections.reverse(items);  // Reverses the copy
+    return items;
 	}
+
 
 	@SuppressWarnings("finally")
 	public ItemEntity updateItem(Long propertyTag, ItemEntity newItemDetails, String fullName) {

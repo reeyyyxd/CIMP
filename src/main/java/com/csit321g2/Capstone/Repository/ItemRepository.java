@@ -18,9 +18,8 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
 	
     List<ItemEntity> findByAccPersonUid(Long uid);
 
-    @Query(value="SELECT i.department, COUNT(i) FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0 GROUP BY i.department")
+    @Query(value="SELECT i.department, COUNT(i) FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0 AND i.department IS NOT NULL AND i.department <> '' GROUP BY i.department")
     public List<Object> getStats2();
-
 
     @Query(value="SELECT i FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0 ORDER BY i.iid DESC LIMIT 10")
     public List<ItemEntity> getItemDash();
@@ -31,7 +30,7 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
     @Query(value = "SELECT CONCAT(i.accPerson.fname, ' ', i.accPerson.lname) FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchAccPer();
 
-    @Query(value="SELECT i.department FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
+    @Query(value="SELECT i.department FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0 AND i.department IS NOT NULL AND i.department <> ''")
     public List<String> fetchDep();
 
     @Query(value="SELECT i.designation FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")

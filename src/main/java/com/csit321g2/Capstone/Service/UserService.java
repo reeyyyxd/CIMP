@@ -82,6 +82,7 @@ public class UserService {
 				UserEntity user = userOptional.get();
 				user.setDeleted(true);
 				msg = "User with ID " + uid + " is successfully deleted!";
+				urepo.save(user);
 			} else {
 				msg = "User with ID " + uid + " does not exist.";
 			}
@@ -89,6 +90,8 @@ public class UserService {
 			msg = "An error occurred while deleting the user with ID " + uid + ": " + e.getMessage();
 		}
 		
+		
+
 		return msg;
 	}
 	

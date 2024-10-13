@@ -188,6 +188,22 @@ public class ItemService {
 		return irepo.fetchItemByDepartment(depa);
 	}
 
+	public int fetchToBeAssigned(){
+		return irepo.fetchToBeAssigned();
+	}
+
+	public List<Object[]> getFrequentlyOrdered(){
+		return irepo.getFrequentlyOrdered();
+	}
+
+	public int fetchWaiting(){
+		return irepo.fetchWaiting();
+	}
+
+	public int fetchToBeReturned(){
+		return irepo.fetchToBeReturned();
+	}
+
 	@SuppressWarnings("finally")
 	public ItemEntity requestItem(int number, long itemId){
 		ItemEntity test = new ItemEntity();

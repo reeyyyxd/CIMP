@@ -183,6 +183,26 @@ public class ItemController {
 	@RequestParam String type,@RequestParam String bef, @RequestParam String aft){
 		return iserv.searchLogs(month, year, day, type , bef, aft);
 	}
+
+	@GetMapping("/getToBeAssigned")
+	public int fetchToBeAssigned(){
+		return iserv.fetchToBeAssigned();
+	}
+
+	@GetMapping("/frequentlyOrdered")
+	public List<Object[]> getFrequentlyOrdered(){
+		return iserv.getFrequentlyOrdered();
+	}
+
+	@GetMapping("/waiting")
+	public int fetchWaiting(){
+		return iserv.fetchWaiting();
+	}
+
+	@GetMapping("/toBeReturned")
+	public int fetchToBeReturned(){
+		return iserv.fetchToBeReturned();
+	}
 	
 	@GetMapping("/accPerson/{uid}")
     public List<ItemEntity> getItemsByAccPersonUid(@PathVariable Long uid) {

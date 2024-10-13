@@ -169,4 +169,20 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
     "AND (CAST(i.iid AS STRING) = %:info%)")
     public ItemEntity fetchFullInfo(@Param("info") String info);
 
+    @Query(value="SELECT COUNT(i) FROM ItemEntity i WHERE i.status = 'TO BE ASSIGNED'")
+    public int fetchToBeAssigned();
+
+    @Query(value="SELECT COUNT(i) FROM ItemEntity i WHERE i.status = 'WAITING'")
+    public int fetchWaiting();
+
+    @Query(value="SELECT COUNT(i) FROM ItemEntity i WHERE i.status = 'TO BE RETURNED'")
+    public int fetchToBeReturned();
+
+    @Query("SELECT LOWER(d.name), COUNT(d) " +
+       "FROM ItemEntity i JOIN i.description d " +
+       "GROUP BY LOWER(d.name) " +
+       "ORDER BY COUNT(d) DESC LIMIT 5")
+    List<Object[]> getFrequentlyOrdered();
+
+
 }

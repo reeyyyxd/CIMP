@@ -7,11 +7,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.csit321g2.Capstone.Entity.ItemEntity;
 import com.csit321g2.Capstone.Entity.LogEntity;
 import com.csit321g2.Capstone.Entity.UserEntity;
 import com.csit321g2.Capstone.Repository.ItemRepository;
+import com.csit321g2.Capstone.Repository.ItemRepositoryCustom;
 import com.csit321g2.Capstone.Repository.UserRepository;
 
 @Service
@@ -19,6 +21,9 @@ public class ItemService {
 	
 	@Autowired
 	ItemRepository irepo;
+
+	@Autowired
+	private ItemRepositoryCustom itemRepository;
 
 	@Autowired
 	UserRepository urepo;
@@ -234,46 +239,39 @@ public class ItemService {
 		return irepo.searchLogs(month,year,day,type ,bef,aft);
 	}
 
-	public List<ItemEntity> fetchFilter(String acc_per,
-	String department,
-    String designation,
-    String status,
-    String uom,
-    String supplier,
-    String building,
-    String room,
-	String name,
-    String model,
-    String type,
-	String invoice_date,
-	String lifespan) {
-		LocalDate localInvoiceDate = (invoice_date != null && !invoice_date.isEmpty()) 
-		? LocalDate.parse(invoice_date) 
-		: null;
-		return irepo.fetchFilter(acc_per, department, designation, status, uom, supplier, building, room, name, model, type, localInvoiceDate, lifespan);
-	}
-
-	public Long fetchSum(String acc_per,
-	String department,
-    String designation,
-    String status,
-    String uom,
-    String supplier,
-    String building,
-    String room,
-	String name,
-    String model,
-    String type,
-	String invoice_date,
-	String lifespan) {
-		LocalDate localInvoiceDate = (invoice_date != null && !invoice_date.isEmpty()) 
-		? LocalDate.parse(invoice_date) 
-		: null;
-		return irepo.fetchSum(acc_per, department, designation, status, uom, supplier, building, room, name, model, type, localInvoiceDate, lifespan);
-	}
-
 	public List<ItemEntity> getItemsByAccPersonUid(Long uid) {
         return irepo.findByAccPersonUid(uid);
     }
+	
+	public List<ItemEntity> filterItems(
+			@RequestParam(required = false) String accountablePerson,
+			@RequestParam(required = false) String department,
+			@RequestParam(required = false) String designation,
+			@RequestParam(required = false) String unitOfMeasurement,
+			@RequestParam(required = false) String status,
+			@RequestParam(required = false) String supplier,
+			@RequestParam(required = false) String building,
+			@RequestParam(required = false) String room,
+			@RequestParam(required = false) String name,
+			@RequestParam(required = false) String model,
+			@RequestParam(required = false) String type,
+			@RequestParam(required = false) LocalDate invoiceDate,
+			@RequestParam(required = false) String lifespan) {
+
+		return itemRepository.findByFilters(accountablePerson, department, designation, 
+				unitOfMeasurement, status, supplier, building, room, 
+				name, model, type, invoiceDate, lifespan);
+	}
+
+	public Float sumFilteredItems(String accountablePerson, String department, 
+                              String designation, String unitOfMeasurement, 
+                              String status, String supplier, 
+                              String building, String room, 
+                              String name, String model, String type, 
+                              LocalDate invoiceDate, String lifespan) {
+		return itemRepository.sumByFilters(accountablePerson, department, designation, 
+			unitOfMeasurement, status, supplier, building, room, 
+			name, model, type, invoiceDate, lifespan);
+	}
 
 }

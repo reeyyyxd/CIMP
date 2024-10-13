@@ -17,9 +17,7 @@ import com.csit321g2.Capstone.Entity.LogEntity;
 public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
 	
     List<ItemEntity> findByAccPersonUid(Long uid);
-    
-    //@Query(value="SELECT s FROM AccountEntity s WHERE firstname LIKE %:fname% AND lastname LIKE %:lname%")
-	//public List<AccountEntity> fetchAllCustom(@Param("fname")String fname,@Param("lname")String lname);
+
     @Query(value="SELECT i.department, COUNT(i) FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0 GROUP BY i.department")
     public List<Object> getStats2();
 
@@ -30,11 +28,8 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
     @Query(value="SELECT l FROM LogEntity l, ItemEntity i WHERE l.logid = i.iid AND CAST(i.isDeleted AS int) = 0 ORDER BY l.logid DESC LIMIT 10")
     public List<ItemEntity> getLogDash();
 
-    // @Query(value="SELECT i.accPerson FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
-    // public List<String> fetchAccPer();
-
     @Query(value = "SELECT CONCAT(i.accPerson.fname, ' ', i.accPerson.lname) FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
-    public List<String> fetchAccPer(); // Returns List<String> with concatenated names
+    public List<String> fetchAccPer();
 
     @Query(value="SELECT i.department FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchDep();
@@ -154,7 +149,7 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
             "END LIKE :day% " +
         "AND l.type LIKE %:type% " +
         "AND ((:bef = '' AND :aft = '') OR (CAST(l.time AS STRING) BETWEEN :bef and :aft))")
-List<LogEntity> searchLogs(
+    List<LogEntity> searchLogs(
     @Param("month") String month,
     @Param("year") String year,
     @Param("day") String day,
@@ -175,65 +170,4 @@ List<LogEntity> searchLogs(
     "AND (CAST(i.iid AS STRING) = %:info%)")
     public ItemEntity fetchFullInfo(@Param("info") String info);
 
-    @Query(value = "SELECT i, l, d FROM ItemEntity i, LocationEntity l, DescriptionEntity d " +
-    "WHERE i.location.lid = l.lid AND i.description.did = d.did " +
-    // "AND (i.accPerson LIKE %:acc_per% " +
-    "AND (CONCAT(i.accPerson.fname, ' ', i.accPerson.lname) LIKE %:acc_per% " +
-    "AND i.department LIKE %:department% " +
-    "AND i.designation LIKE %:designation% " +
-    "AND i.status LIKE %:status% " +
-    "AND i.unitOfMeasurement LIKE %:uom% " +
-    "AND i.supplier LIKE %:supplier% " +
-    "AND l.building LIKE %:building% " +
-    "AND l.room LIKE %:room% " +
-    "AND d.name LIKE %:name% " +
-    "AND d.model LIKE %:model% " +
-    "AND d.type LIKE %:type% " +
-    "AND (:invoice_date IS NULL OR i.invoiceDate = :invoice_date) " +
-    "AND CAST(i.lifespan AS STRING) LIKE %:lifespan% ) " +
-    "AND CAST(i.isDeleted AS int) = 0")
-    public List<ItemEntity> fetchFilter(@Param("acc_per") String acc_per,
-                                          @Param("department") String department,
-                                          @Param("designation") String designation,
-                                          @Param("status") String status,
-                                          @Param("uom") String uom,
-                                          @Param("supplier") String supplier,
-                                          @Param("building") String building,
-                                          @Param("room") String room,
-                                          @Param("name") String name,
-                                          @Param("model") String model,
-                                          @Param("type") String type,
-                                          @Param("invoice_date") LocalDate invoice_date, // keep this as LocalDate
-                                          @Param("lifespan") String lifespan);
-    
-    @Query(value="SELECT SUM(totalCost) FROM ItemEntity i , LocationEntity l, DescriptionEntity d " +
-    "WHERE i.location.lid = l.lid AND i.description.did = d.did " +
-    // "AND (i.accPerson LIKE %:acc_per% " +
-    "AND (CONCAT(i.accPerson.fname, ' ', i.accPerson.lname) LIKE %:acc_per% " +
-    "AND i.department LIKE %:department% " +
-    "AND i.designation LIKE %:designation% " +
-    "AND i.status LIKE %:status% " +
-    "AND i.unitOfMeasurement LIKE %:uom% " +
-    "AND i.supplier LIKE %:supplier% " +
-    "AND l.building LIKE %:building% " +
-    "AND l.room LIKE %:room% " +
-    "AND d.name LIKE %:name% " +
-    "AND d.model LIKE %:model% " +
-    "AND d.type LIKE %:type% " +
-    "AND (:invoice_date IS NULL OR i.invoiceDate = :invoice_date) " +
-    "AND CAST(i.lifespan AS STRING) LIKE %:lifespan% ) AND CAST(i.isDeleted AS int) = 0")
-    public Long fetchSum(@Param("acc_per")String acc_per,
-    @Param("department")String department,
-    @Param("designation")String designation,
-    @Param("status")String status,
-    @Param("uom")String uom,
-    @Param("supplier")String supplier,
-    @Param("building")String building,
-    @Param("room")String room,
-    @Param("name")String name,
-    @Param("model")String model,
-    @Param("type") String type,
-    @Param("invoice_date") LocalDate invoice_date,
-    @Param("lifespan") String lifespan);
-	
 }

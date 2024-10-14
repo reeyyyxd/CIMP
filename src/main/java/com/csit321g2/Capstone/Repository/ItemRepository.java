@@ -66,6 +66,9 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
     @Query(value="SELECT i.lifespan FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchLifespan();
 
+    @Query(value="SELECT i.issueOrder FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
+    public List<Integer> fetchIssueOrder();
+
     @Query(value="SELECT l.type FROM LogEntity l")
     public List<String> fetchLogsType();
 

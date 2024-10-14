@@ -20,7 +20,7 @@ import com.csit321g2.Capstone.Entity.LogEntity;
 import com.csit321g2.Capstone.Service.ItemService;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:5173", "http://10.241.4.80:5173"})
+@CrossOrigin(origins = {"http://localhost:5173", "http://10.241.4.80:5173", "http://10.241.126.247:5173"})
 @RequestMapping("/item")
 public class ItemController {
 	
@@ -127,6 +127,11 @@ public class ItemController {
 		return iserv.fetchLifespan();
 	}
 
+	@GetMapping("/issueOrder")
+	public List<Integer> fetchIssueOrder() {
+		return iserv.fetchIssueOrder();
+	}
+
 	@GetMapping("/logstype")
 	public List<String> fetchLogsType() {
 		return iserv.fetchLogsType();
@@ -223,11 +228,12 @@ public class ItemController {
 			@RequestParam(required = false) String model,
 			@RequestParam(required = false) String type,
 			@RequestParam(required = false) LocalDate invoiceDate,
-			@RequestParam(required = false) String lifespan) {
+			@RequestParam(required = false) String lifespan,
+			@RequestParam(required = false) Integer issueOrder) {
 
 		return iserv.filterItems(accountablePerson, department, designation, 
 				unitOfMeasurement, status, supplier, building, room, 
-				name, model, type, invoiceDate, lifespan);
+				name, model, type, invoiceDate, lifespan, issueOrder);
 	}
 
 	@GetMapping("/sum")
@@ -244,11 +250,12 @@ public class ItemController {
 			@RequestParam(required = false) String model,
 			@RequestParam(required = false) String type,
 			@RequestParam(required = false) LocalDate invoiceDate,
-			@RequestParam(required = false) String lifespan) {
+			@RequestParam(required = false) String lifespan,
+			@RequestParam(required = false) Integer issueOrder) {
 
 		return iserv.sumFilteredItems(accountablePerson, department, designation, 
 				unitOfMeasurement, status, supplier, building, room, 
-				name, model, type, invoiceDate, lifespan);
+				name, model, type, invoiceDate, lifespan, issueOrder);
 	}
 
 }

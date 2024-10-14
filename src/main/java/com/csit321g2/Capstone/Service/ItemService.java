@@ -165,6 +165,10 @@ public class ItemService {
 		return irepo.fetchLifespan();
 	}
 
+	public List<Integer>fetchIssueOrder(){
+		return irepo.fetchIssueOrder();
+	}
+
 	public List<String>fetchLogsType(){
 		return irepo.fetchLogsType();
 	}
@@ -277,11 +281,12 @@ public class ItemService {
 			@RequestParam(required = false) String model,
 			@RequestParam(required = false) String type,
 			@RequestParam(required = false) LocalDate invoiceDate,
-			@RequestParam(required = false) String lifespan) {
+			@RequestParam(required = false) String lifespan,
+			@RequestParam(required = false) Integer issueOrder) {
 
 		return itemRepository.findByFilters(accountablePerson, department, designation, 
 				unitOfMeasurement, status, supplier, building, room, 
-				name, model, type, invoiceDate, lifespan);
+				name, model, type, invoiceDate, lifespan, issueOrder);
 	}
 
 	public Float sumFilteredItems(String accountablePerson, String department, 
@@ -289,10 +294,11 @@ public class ItemService {
                               String status, String supplier, 
                               String building, String room, 
                               String name, String model, String type, 
-                              LocalDate invoiceDate, String lifespan) {
+                              LocalDate invoiceDate, String lifespan,
+							  Integer issueOrder) {
 		return itemRepository.sumByFilters(accountablePerson, department, designation, 
 			unitOfMeasurement, status, supplier, building, room, 
-			name, model, type, invoiceDate, lifespan);
+			name, model, type, invoiceDate, lifespan, issueOrder);
 	}
 
 }

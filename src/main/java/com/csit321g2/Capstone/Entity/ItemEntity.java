@@ -25,7 +25,7 @@ public class ItemEntity {
 	private Long iid;
 	
 	@Column(name = "issueOrderNumber")
-	private int issueOrder;
+	private Integer issueOrder;
 	
 	private String department;
 
@@ -70,7 +70,7 @@ public class ItemEntity {
 	public ItemEntity() {
 	}
 
-	public ItemEntity(int issueOrder, String department, UserEntity accPerson, String designation, String invoiceNumber,
+	public ItemEntity(Integer issueOrder, String department, UserEntity accPerson, String designation, String invoiceNumber,
 			LocalDate invoiceDate, String supplier, int quantity, String unitOfMeasurement,
 			DescriptionEntity description, float unitCost, float totalCost, LocationEntity location, String status,
 			String lifespan, String remarks, boolean isDeleted) {
@@ -101,11 +101,11 @@ public class ItemEntity {
 		this.iid = iid;
 	}
 
-	public int getIssueOrder() {
+	public Integer getIssueOrder() {
 		return issueOrder;
 	}
 
-	public void setIssueOrder(int issueOrder) {
+	public void setIssueOrder(Integer issueOrder) {
 		this.issueOrder = issueOrder;
 	}
 

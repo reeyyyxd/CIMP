@@ -11,12 +11,12 @@ public interface ItemRepositoryCustom {
                                     String status, String supplier, 
                                     String building, String room, 
                                     String name, String model, String type, 
-                                    LocalDate invoiceDate, String lifespan);
+                                    LocalDate invoiceDate, String lifespan, Integer issueOrder);
 
     Float sumByFilters(String accountablePerson, String department, 
                                     String designation, String unitOfMeasurement, 
                                     String status, String supplier, 
                                     String building, String room, 
                                     String name, String model, String type, 
-                                    LocalDate invoiceDate, String lifespan);
+                                    LocalDate invoiceDate, String lifespan, Integer issueOrder);
 }

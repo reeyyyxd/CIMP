@@ -28,7 +28,7 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
                                         String status, String supplier, 
                                         String building, String room, 
                                         String name, String model, String type, 
-                                        LocalDate invoiceDate, String lifespan) {
+                                        LocalDate invoiceDate, String lifespan, Integer issueOrder) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<ItemEntity> cq = cb.createQuery(ItemEntity.class);
         Root<ItemEntity> item = cq.from(ItemEntity.class);
@@ -79,6 +79,9 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
         if (lifespan != null && !lifespan.isEmpty()) {
             predicates.add(cb.equal(item.get("lifespan"), lifespan));
         }
+        if (issueOrder != null) {
+            predicates.add(cb.equal(item.get("issueOrder"), issueOrder));
+        }
 
         // Apply predicates
         if (!predicates.isEmpty()) {
@@ -94,7 +97,7 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
                             String status, String supplier, 
                             String building, String room, 
                             String name, String model, String type, 
-                            LocalDate invoiceDate, String lifespan) {
+                            LocalDate invoiceDate, String lifespan, Integer issueOrder) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Float> cq = cb.createQuery(Float.class);
         Root<ItemEntity> item = cq.from(ItemEntity.class);
@@ -142,6 +145,9 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
         }
         if (lifespan != null && !lifespan.isEmpty()) {
             predicates.add(cb.equal(item.get("lifespan"), lifespan));
+        }
+        if (issueOrder != null) {
+            predicates.add(cb.equal(item.get("issueOrder"), issueOrder));
         }
 
         // Apply predicates

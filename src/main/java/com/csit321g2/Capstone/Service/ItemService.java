@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.csit321g2.Capstone.Entity.ItemEntity;
@@ -55,30 +56,19 @@ public class ItemService {
 	}
 	
 	public List<ItemEntity> getAllItems() {
-    List<ItemEntity> items = new ArrayList<>(irepo.findAll());  // Creates a copy of the list
-    Collections.reverse(items);  // Reverses the copy
-    return items;
+		List<ItemEntity> items = new ArrayList<>(irepo.findAll());
+		Collections.reverse(items);
+		return items;
 	}
 
-
 	@SuppressWarnings("finally")
-	public ItemEntity updateItem(Long propertyTag, ItemEntity newItemDetails, String fullName) {
+	public ItemEntity updateItem(Long propertyTag, ItemEntity newItemDetails) {
 		ItemEntity item = new ItemEntity();
 		try {
-			//search id b4 update
-			item = irepo.findById(propertyTag).get();
-
-			Optional<UserEntity> userOpt = urepo.findByFullName(fullName);
-			if (userOpt.isPresent()) {
-				item.setAccPerson(userOpt.get());
-			} else {
-				item.setAccPerson(null);
-			}
+			item = irepo.findById(propertyTag).orElseThrow(() -> 
+				new NoSuchElementException("Item " + propertyTag + " does not exist!"));
 			
-			//update
 			item.setIssueOrder(newItemDetails.getIssueOrder());
-			item.setDepartment(newItemDetails.getDepartment());
-			item.setDesignation(newItemDetails.getDesignation());
 			item.setInvoiceNumber(newItemDetails.getInvoiceNumber());
 			item.setInvoiceDate(newItemDetails.getInvoiceDate());
 			item.setSupplier(newItemDetails.getSupplier());
@@ -91,19 +81,20 @@ public class ItemService {
 			item.setLifespan(newItemDetails.getLifespan());
 			item.setStatus(newItemDetails.getStatus());
 			item.setRemarks(newItemDetails.getRemarks());
+			item.setConsumable(newItemDetails.isConsumable());
 			
-		} catch (NoSuchElementException ex){
+		} catch (NoSuchElementException ex) {
 			throw new NoSuchElementException("Item " + propertyTag + " does not exist!");
 		} finally {
 			return irepo.save(item);
 		}
 	}
 
+
 	public String deleteItem(Long propertyTag) {
 		String msg = "";
 		
 		if (irepo.findById(propertyTag) != null) {
-			// irepo.deleteById(propertyTag);
 			ItemEntity test = irepo.findById(propertyTag).get();
 			test.setDeleted(true);
 			irepo.save(test);
@@ -233,7 +224,6 @@ public class ItemService {
 			test.setQuantity(finalQuanti);
 			test.setTotalCost(finalTotal);
 
-			//test.setStatus(status);
 		} catch (NoSuchElementException ex){
 			throw new NoSuchElementException("Item " + itemId + " does not exist!");
 		} finally {
@@ -296,9 +286,33 @@ public class ItemService {
                               String name, String model, String type, 
                               LocalDate invoiceDate, String lifespan,
 							  Integer issueOrder) {
+
 		return itemRepository.sumByFilters(accountablePerson, department, designation, 
 			unitOfMeasurement, status, supplier, building, room, 
 			name, model, type, invoiceDate, lifespan, issueOrder);
+	}
+
+	@Transactional
+    public void assignUserToItem(Long itemId, String fullName) {
+        ItemEntity item = irepo.findById(itemId)
+                .orElseThrow(() -> new RuntimeException("Item not found"));
+        
+        UserEntity user = urepo.findByFullName(fullName)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+		
+        item.setAccPerson(user);
+		item.setStatus("WAITING");
+        irepo.save(item);
+    }
+
+	@Transactional
+	public void unassignUserFromItem(Long itemId) {
+		ItemEntity item = irepo.findById(itemId)
+				.orElseThrow(() -> new RuntimeException("Item not found"));
+		
+		item.setAccPerson(null);
+		item.setStatus("TO BE ASSIGNED");
+		irepo.save(item);
 	}
 
 }

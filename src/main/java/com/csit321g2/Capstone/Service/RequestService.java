@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.csit321g2.Capstone.Entity.ItemEntity;
 import com.csit321g2.Capstone.Entity.RequestEntity;
@@ -52,8 +53,9 @@ public class RequestService {
         request.setItemStatus(item.getStatus());
         request.setItemTotalCost(item.getTotalCost());
         request.setItemUnitOfMeasurement(item.getUnitOfMeasurement());
+        request.setItemConsumable(item.isConsumable());
 
-        request.setDate_req(LocalDateTime.now());
+        request.setDateReq(LocalDateTime.now());
         request.setStatus("PENDING");
         return rrepo.save(request);
     }
@@ -86,8 +88,6 @@ public class RequestService {
         ItemEntity item = irepo.findById(request.getItemId())
                     .orElseThrow(() -> new RuntimeException("Item not found."));
         item.setAccPerson(null);
-        item.setDepartment(null);
-        item.setDesignation(null);
         item.setStatus("TO BE ASSIGNED");
         irepo.save(item);
     
@@ -119,9 +119,44 @@ public class RequestService {
         ItemEntity item = irepo.findById(request.getItemId())
                     .orElseThrow(() -> new RuntimeException("Item not found."));
         item.setAccPerson(null);
-        item.setDepartment(null);
-        item.setDesignation(null);
+        item.setStatus("RETURNED");
+        irepo.save(item);
+    
+        return rrepo.save(request);
+    }
+
+    public RequestEntity addBack(Long rid, int quantityToDeduct) {
+        RequestEntity request = rrepo.findById(rid)
+                    .orElseThrow(() -> new RuntimeException("Request not found."));
+    
+        request.setStatus("ADD BACK");
+        request.setItemStatus("ADD BACK");
+
+        ItemEntity item = irepo.findById(request.getItemId())
+                    .orElseThrow(() -> new RuntimeException("Item not found."));
+
+        if (item.getQuantity() < quantityToDeduct) {
+            throw new RuntimeException("Not enough quantity available.");
+        }
+
+        item.setQuantity(item.getQuantity() - quantityToDeduct);
         item.setStatus("TO BE ASSIGNED");
+        irepo.save(item);
+    
+        return rrepo.save(request);
+    }
+
+    public RequestEntity disposeItem(Long rid) {
+        RequestEntity request = rrepo.findById(rid)
+                    .orElseThrow(() -> new RuntimeException("Request not found."));
+    
+        request.setStatus("DISPOSED");
+        request.setItemStatus("DISPOSED");
+
+        ItemEntity item = irepo.findById(request.getItemId())
+                    .orElseThrow(() -> new RuntimeException("Item not found."));
+        item.setStatus("DISPOSED");
+        item.setDeleted(true);
         irepo.save(item);
     
         return rrepo.save(request);
@@ -149,8 +184,6 @@ public class RequestService {
 
                 dummy.setDate_app(null);
                 dummy2.setAccPerson(null);
-                dummy2.setDesignation("");
-                dummy2.setDepartment("");
             }
 
             dummy2.setStatus(dummyStatus);
@@ -170,4 +203,21 @@ public class RequestService {
         return rrepo.findByItemStatus(status);
     }
 
+    @Transactional
+    public void unassignUserFromRequest(Long rid) {
+        RequestEntity request = rrepo.findById(rid)
+                .orElseThrow(() -> new RuntimeException("Request not found"));
+
+        request.setStatus("UNASSIGNED");
+        request.setItemStatus("UNASSIGNED");
+        rrepo.save(request);
+    }
+
+    public RequestEntity getRequestByItemInfo(Long itemAccPerId, Long itemId, String itemName, int itemQuantity,
+                                               String itemUnitOfMeasurement, float itemTotalCost,
+                                               String itemStatus, String itemModel, String itemSerialNumber,
+                                               boolean itemConsumable, LocalDateTime dateReq) {
+        return rrepo.findByItemAccPerIdAndItemIdAndItemNameAndItemQuantityAndItemUnitOfMeasurementAndItemTotalCostAndItemStatusAndItemModelAndItemSerialNumberAndItemConsumableAndDateReq(
+                itemAccPerId, itemId, itemName, itemQuantity, itemUnitOfMeasurement, itemTotalCost, itemStatus, itemModel, itemSerialNumber, itemConsumable, dateReq);
+    }
 }

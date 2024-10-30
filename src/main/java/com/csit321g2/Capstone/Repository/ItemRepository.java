@@ -18,7 +18,7 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
 	
     List<ItemEntity> findByAccPersonUid(Long uid);
 
-    @Query(value="SELECT i.department, COUNT(i) FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0 AND i.department IS NOT NULL AND i.department <> '' GROUP BY i.department")
+    @Query(value = "SELECT u.department, COUNT(i) FROM ItemEntity i JOIN i.accPerson u WHERE i.isDeleted = false AND u.department IS NOT NULL AND u.department <> '' GROUP BY u.department")
     public List<Object> getStats2();
 
     @Query(value="SELECT i FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0 ORDER BY i.iid DESC LIMIT 10")
@@ -30,10 +30,10 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
     @Query(value = "SELECT CONCAT(i.accPerson.fname, ' ', i.accPerson.lname) FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
     public List<String> fetchAccPer();
 
-    @Query(value="SELECT i.department FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0 AND i.department IS NOT NULL AND i.department <> ''")
+    @Query("SELECT DISTINCT u.department FROM ItemEntity i JOIN i.accPerson u WHERE i.isDeleted = false AND u.department IS NOT NULL AND u.department <> ''")
     public List<String> fetchDep();
 
-    @Query(value="SELECT i.designation FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
+    @Query("SELECT DISTINCT u.designation FROM ItemEntity i JOIN i.accPerson u WHERE i.isDeleted = false")
     public List<String> fetchDesig();
 
     @Query(value="SELECT i.status FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0")
@@ -81,10 +81,9 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
     @Query(value="SELECT i.status FROM ItemEntity i WHERE i.iid = :type")
     public String fetchStatusLog(@Param("type") String type);
 
-    @Query(value="SELECT i FROM ItemEntity i WHERE CAST(i.isDeleted AS int) = 0 AND i.department = :depa")
+    @Query(value = "SELECT i FROM ItemEntity i JOIN i.accPerson u WHERE i.isDeleted = false AND u.department = :depa")
     public List<ItemEntity> fetchItemByDepartment(@Param("depa") String depa);
-    
-      
+
     @Query(value="UPDATE ItemEntity i SET i.quantity = i.quantity - :number, i.totalCost = i.unitCost * (i.quantity - :number) WHERE i.iid = :itemId")
     @Modifying
     public int requestItem(@Param("number") int number, @Param("itemId") long itemId);
@@ -186,6 +185,5 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long>{
        "GROUP BY LOWER(d.name) " +
        "ORDER BY COUNT(d) DESC LIMIT 5")
     List<Object[]> getFrequentlyOrdered();
-
 
 }

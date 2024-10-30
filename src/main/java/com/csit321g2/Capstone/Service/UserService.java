@@ -42,21 +42,24 @@ public class UserService {
         return urepo.findAllUsersWithoutPassword();
     }
 
-    @SuppressWarnings("finally")
+	@SuppressWarnings("finally")
 	public UserEntity updateUser(long uid, UserEntity newuserDetails) {
 		UserEntity user = new UserEntity();
 		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 
 		try {
 			
-			//search id b4 update
-			user = urepo.findById(uid).get();
+			user = urepo.findById(uid).orElseThrow(() -> 
+            	new NoSuchElementException("User " + uid + " does not exist!"));
 			
 			//update
 			user.setFname(newuserDetails.getFname());
 			user.setLname(newuserDetails.getLname());
 			user.setUsername(newuserDetails.getUsername());
 			user.setType(newuserDetails.getType());
+			user.setDepartment(newuserDetails.getDepartment());
+			user.setDesignation(newuserDetails.getDesignation());
+
 			if(newuserDetails.getPassword() != null) {
 				String encryptedPwd = bcrypt.encode(newuserDetails.getPassword());
 				user.setPassword(encryptedPwd);
@@ -90,8 +93,6 @@ public class UserService {
 			msg = "An error occurred while deleting the user with ID " + uid + ": " + e.getMessage();
 		}
 		
-		
-
 		return msg;
 	}
 	

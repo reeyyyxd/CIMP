@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.csit321g2.Capstone.Entity.ItemEntity;
+import com.csit321g2.Capstone.Entity.UserEntity;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.EntityManager;
@@ -23,32 +26,41 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
     private EntityManager entityManager;
 
     @Override
-    public List<ItemEntity> findByFilters(String accountablePerson, String department, 
-                                        String designation, String unitOfMeasurement, 
-                                        String status, String supplier, 
-                                        String building, String room, 
-                                        String name, String model, String type, 
-                                        LocalDate invoiceDate, String lifespan, Integer issueOrder) {
+    public List<ItemEntity> findByFilters(String accountablePerson, 
+                                            String department, 
+                                            String designation, 
+                                            String unitOfMeasurement, 
+                                            String status, 
+                                            String supplier, 
+                                            String building, 
+                                            String room, 
+                                            String name, 
+                                            String model, 
+                                            String type, 
+                                            LocalDate invoiceDate, 
+                                            String lifespan, 
+                                            Integer issueOrder) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<ItemEntity> cq = cb.createQuery(ItemEntity.class);
         Root<ItemEntity> item = cq.from(ItemEntity.class);
         
+        Join<ItemEntity, UserEntity> user = item.join("accPerson", JoinType.LEFT);
+
         List<Predicate> predicates = new ArrayList<>();
 
-        // Filter by Accountable Person (concatenated First Name and Last Name)
         if (accountablePerson != null && !accountablePerson.isEmpty()) {
-            Expression<String> fullName = cb.concat(item.get("accPerson").get("fname"), 
-                                    cb.concat(cb.literal(" "), item.get("accPerson").get("lname")));
+            Expression<String> fullName = cb.concat(user.get("fname"), 
+                                    cb.concat(cb.literal(" "), user.get("lname")));
             predicates.add(cb.like(fullName, "%" + accountablePerson + "%"));
         }
-        
-        // Other filters
+
         if (department != null && !department.isEmpty()) {
-            predicates.add(cb.equal(item.get("department"), department));
+            predicates.add(cb.equal(user.get("department"), department));
         }
         if (designation != null && !designation.isEmpty()) {
-            predicates.add(cb.equal(item.get("designation"), designation));
+            predicates.add(cb.equal(user.get("designation"), designation));
         }
+
         if (unitOfMeasurement != null && !unitOfMeasurement.isEmpty()) {
             predicates.add(cb.equal(item.get("unitOfMeasurement"), unitOfMeasurement));
         }
@@ -83,7 +95,6 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
             predicates.add(cb.equal(item.get("issueOrder"), issueOrder));
         }
 
-        // Apply predicates
         if (!predicates.isEmpty()) {
             cq.where(predicates.toArray(new Predicate[0]));
         }
@@ -92,29 +103,38 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
     }
 
     @Override
-    public Float sumByFilters(String accountablePerson, String department, 
-                            String designation, String unitOfMeasurement, 
-                            String status, String supplier, 
-                            String building, String room, 
-                            String name, String model, String type, 
-                            LocalDate invoiceDate, String lifespan, Integer issueOrder) {
+    public Float sumByFilters(String accountablePerson, 
+                            String department, 
+                            String designation, 
+                            String unitOfMeasurement, 
+                            String status, 
+                            String supplier, 
+                            String building, 
+                            String room, 
+                            String name, 
+                            String model, 
+                            String type, 
+                            LocalDate invoiceDate, 
+                            String lifespan, 
+                            Integer issueOrder) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Float> cq = cb.createQuery(Float.class);
         Root<ItemEntity> item = cq.from(ItemEntity.class);
+
+        Join<ItemEntity, UserEntity> user = item.join("accPerson", JoinType.LEFT);
         
-        // Create predicates based on the provided filters
         List<Predicate> predicates = new ArrayList<>();
 
         if (accountablePerson != null && !accountablePerson.isEmpty()) {
             Expression<String> fullName = cb.concat(item.get("accPerson").get("fname"), 
-                                cb.concat(cb.literal(" "), item.get("accPerson").get("lname")));
+                                    cb.concat(cb.literal(" "), item.get("accPerson").get("lname")));
             predicates.add(cb.like(fullName, "%" + accountablePerson + "%"));
         }
         if (department != null && !department.isEmpty()) {
-            predicates.add(cb.equal(item.get("department"), department));
+            predicates.add(cb.equal(user.get("department"), department));
         }
         if (designation != null && !designation.isEmpty()) {
-            predicates.add(cb.equal(item.get("designation"), designation));
+            predicates.add(cb.equal(user.get("designation"), designation));
         }
         if (unitOfMeasurement != null && !unitOfMeasurement.isEmpty()) {
             predicates.add(cb.equal(item.get("unitOfMeasurement"), unitOfMeasurement));
@@ -150,13 +170,12 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
             predicates.add(cb.equal(item.get("issueOrder"), issueOrder));
         }
 
-        // Apply predicates
         if (!predicates.isEmpty()) {
             cq.where(predicates.toArray(new Predicate[0]));
         }
 
-        // Sum the desired field(s), for example, totalCost
         cq.select(cb.sum(item.get("totalCost")));
         return entityManager.createQuery(cq).getSingleResult();
     }
+
 }

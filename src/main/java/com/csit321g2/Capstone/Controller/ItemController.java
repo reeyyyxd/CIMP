@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +22,7 @@ import com.csit321g2.Capstone.Entity.LogEntity;
 import com.csit321g2.Capstone.Service.ItemService;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:5173", "http://10.241.4.80:5173", "http://10.241.126.247:5173"})
+@CrossOrigin(origins = {"http://localhost:5173", "http://10.241.4.80:5173", "http://10.241.126.247:5173", "http://10.241.242.242:5173/"})
 @RequestMapping("/item")
 public class ItemController {
 	
@@ -53,8 +55,8 @@ public class ItemController {
 	}
 	
 	@PutMapping("/updateItem/{propertyTag}")
-	public ItemEntity updateItem(@PathVariable Long propertyTag, @RequestBody ItemEntity newItemDetails, @RequestParam String fullName) {
-		return iserv.updateItem(propertyTag, newItemDetails, fullName);
+	public ItemEntity updateItem(@PathVariable Long propertyTag, @RequestBody ItemEntity newItemDetails) {
+		return iserv.updateItem(propertyTag, newItemDetails);
 	}
 	
 	@DeleteMapping("/deleteItem/{propertyTag}")
@@ -256,6 +258,18 @@ public class ItemController {
 		return iserv.sumFilteredItems(accountablePerson, department, designation, 
 				unitOfMeasurement, status, supplier, building, room, 
 				name, model, type, invoiceDate, lifespan, issueOrder);
+	}
+
+	@PostMapping("/assignUser/{itemId}")
+    public ResponseEntity<Void> assignUserToItem(@PathVariable Long itemId, @RequestParam String fullName) {
+        iserv.assignUserToItem(itemId, fullName);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+	@PostMapping("/unassignUser/{itemId}")
+	public ResponseEntity<Void> unassignUserFromItem(@PathVariable Long itemId) {
+		iserv.unassignUserFromItem(itemId);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

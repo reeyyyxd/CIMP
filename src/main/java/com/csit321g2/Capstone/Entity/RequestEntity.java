@@ -19,7 +19,7 @@ public class RequestEntity {
     private long rid;
 
     @JsonFormat(pattern = "MM-dd-yyyy HH:mm:ss")
-    private LocalDateTime date_req;
+    private LocalDateTime dateReq;
 
     @JsonFormat(pattern = "MM-dd-yyyy HH:mm:ss")
     private LocalDateTime date_app;
@@ -37,14 +37,15 @@ public class RequestEntity {
     private String itemStatus;
     private String itemModel;
     private String itemSerialNumber;
+    private boolean itemConsumable;
 
     public RequestEntity() {
     }
 
-    public RequestEntity(LocalDateTime date_req, LocalDateTime date_app, String status, String reason,
-            Long itemAccPerId, Long itemId, String itemName, int itemQuantity, String itemUnitOfMeasurement,
-            float itemTotalCost, String itemStatus, String itemModel, String itemSerialNumber) {
-        this.date_req = date_req;
+    public RequestEntity(LocalDateTime dateReq, LocalDateTime date_app, String status, String reason, Long itemAccPerId,
+            Long itemId, String itemName, int itemQuantity, String itemUnitOfMeasurement, float itemTotalCost,
+            String itemStatus, String itemModel, String itemSerialNumber, boolean itemConsumable) {
+        this.dateReq = dateReq;
         this.date_app = date_app;
         this.status = status;
         this.reason = reason;
@@ -57,7 +58,9 @@ public class RequestEntity {
         this.itemStatus = itemStatus;
         this.itemModel = itemModel;
         this.itemSerialNumber = itemSerialNumber;
+        this.itemConsumable = itemConsumable;
     }
+
 
     public long getRid() {
         return rid;
@@ -67,12 +70,12 @@ public class RequestEntity {
         this.rid = rid;
     }
 
-    public LocalDateTime getDate_req() {
-        return date_req;
+    public LocalDateTime getDateReq() {
+        return dateReq;
     }
 
-    public void setDate_req(LocalDateTime date_req) {
-        this.date_req = date_req;
+    public void setDateReq(LocalDateTime dateReq) {
+        this.dateReq = dateReq;
     }
 
     public LocalDateTime getDate_app() {
@@ -169,6 +172,14 @@ public class RequestEntity {
 
     public void setItemSerialNumber(String itemSerialNumber) {
         this.itemSerialNumber = itemSerialNumber;
+    }
+
+    public boolean isItemConsumable() {
+        return itemConsumable;
+    }
+
+    public void setItemConsumable(boolean itemConsumable) {
+        this.itemConsumable = itemConsumable;
     }
 
 }

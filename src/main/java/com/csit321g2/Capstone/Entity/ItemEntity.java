@@ -26,14 +26,10 @@ public class ItemEntity {
 	
 	@Column(name = "issueOrderNumber")
 	private Integer issueOrder;
-	
-	private String department;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "acc_per_id", referencedColumnName = "uid")
 	private UserEntity accPerson;
-	
-	private String designation;
 	
 	private String invoiceNumber;
 	
@@ -65,19 +61,21 @@ public class ItemEntity {
 	
 	private String remarks;
 
+	private Integer request;
+
+	private boolean isConsumable;
+
 	private boolean isDeleted;
 
 	public ItemEntity() {
 	}
 
-	public ItemEntity(Integer issueOrder, String department, UserEntity accPerson, String designation, String invoiceNumber,
-			LocalDate invoiceDate, String supplier, int quantity, String unitOfMeasurement,
-			DescriptionEntity description, float unitCost, float totalCost, LocationEntity location, String status,
-			String lifespan, String remarks, boolean isDeleted) {
+	public ItemEntity(Integer issueOrder, UserEntity accPerson, String invoiceNumber, LocalDate invoiceDate,
+			String supplier, int quantity, String unitOfMeasurement, DescriptionEntity description, float unitCost,
+			float totalCost, LocationEntity location, String status, String lifespan, String remarks, Integer request,
+			boolean isConsumable, boolean isDeleted) {
 		this.issueOrder = issueOrder;
-		this.department = department;
 		this.accPerson = accPerson;
-		this.designation = designation;
 		this.invoiceNumber = invoiceNumber;
 		this.invoiceDate = invoiceDate;
 		this.supplier = supplier;
@@ -90,6 +88,8 @@ public class ItemEntity {
 		this.status = status;
 		this.lifespan = lifespan;
 		this.remarks = remarks;
+		this.request = request;
+		this.isConsumable = isConsumable;
 		this.isDeleted = isDeleted;
 	}
 
@@ -109,28 +109,12 @@ public class ItemEntity {
 		this.issueOrder = issueOrder;
 	}
 
-	public String getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(String department) {
-		this.department = department;
-	}
-
 	public UserEntity getAccPerson() {
 		return accPerson;
 	}
 
 	public void setAccPerson(UserEntity accPerson) {
 		this.accPerson = accPerson;
-	}
-
-	public String getDesignation() {
-		return designation;
-	}
-
-	public void setDesignation(String designation) {
-		this.designation = designation;
 	}
 
 	public String getInvoiceNumber() {
@@ -227,6 +211,22 @@ public class ItemEntity {
 
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+
+	public Integer getRequest() {
+		return request;
+	}
+
+	public void setRequest(Integer request) {
+		this.request = request;
+	}
+
+	public boolean isConsumable() {
+		return isConsumable;
+	}
+
+	public void setConsumable(boolean isConsumable) {
+		this.isConsumable = isConsumable;
 	}
 
 	public boolean isDeleted() {

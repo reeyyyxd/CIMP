@@ -22,28 +22,34 @@ public class UserEntity {
     private String lname;
 
     private String username;
+    private String department;
+    private String designation;
     private String password;
     private String type;
+    
     private boolean isDeleted;
 
     public UserEntity() {
-
     }
 
-    public UserEntity(String fname, String lname, String username, String password, String type, boolean isDeleted) {
+    public UserEntity(String fname, String lname, String username, String department, String designation, String password, String type, boolean isDeleted) {
         this.fname = fname;
         this.lname = lname;
         this.username = username;
+        this.department = department;
+        this.designation = designation;
         this.password = password;
         this.type = type;
         this.isDeleted = isDeleted;
     }
 
-    public UserEntity(Long uid, String fname, String lname, String username, String type, Boolean isDeleted) {
+    public UserEntity(Long uid, String fname, String lname, String username, String department, String designation, String type, Boolean isDeleted) {
         this.uid = uid;
         this.fname = fname;
         this.lname = lname;
         this.username = username;
+        this.department = department;
+        this.designation = designation;
         this.type = type;
         this.isDeleted = isDeleted;
     }
@@ -78,6 +84,22 @@ public class UserEntity {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
     }
 
     public String getPassword() {

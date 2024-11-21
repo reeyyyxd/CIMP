@@ -13,7 +13,7 @@ public class CapstoneApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CapstoneApplication.class, args);
 		
-		logger.info("Backend is up and running!");
+		logger.info("System is up and running!");
 	}
 
 }

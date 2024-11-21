@@ -125,7 +125,35 @@ public class RequestService {
         return rrepo.save(request);
     }
 
-    public RequestEntity addBack(Long rid, int quantityToDeduct) {
+    // public RequestEntity addBack(Long rid, int quantityToDeduct) {
+    //     RequestEntity request = rrepo.findById(rid)
+    //                 .orElseThrow(() -> new RuntimeException("Request not found."));
+    
+    //     request.setStatus("ADD BACK");
+    //     request.setItemStatus("ADD BACK");
+
+    //     ItemEntity item = irepo.findById(request.getItemId())
+    //                 .orElseThrow(() -> new RuntimeException("Item not found."));
+
+    //     if (item.getQuantity() < quantityToDeduct) {
+    //         throw new RuntimeException("Not enough quantity available.");
+    //     }
+
+    //     if(item.getQuantity() - quantityToDeduct == 0) {
+    //         item.setDeleted(true);
+    //         item.setQuantity(item.getQuantity() - quantityToDeduct);
+    //         item.setStatus("OUT OF STOCK");
+    //     } else {
+    //         item.setQuantity(item.getQuantity() - quantityToDeduct);
+    //         item.setStatus("TO BE ASSIGNED");
+    //     }
+        
+    //     irepo.save(item);
+    
+    //     return rrepo.save(request);
+    // }
+
+    public RequestEntity addBack(Long rid) {
         RequestEntity request = rrepo.findById(rid)
                     .orElseThrow(() -> new RuntimeException("Request not found."));
     
@@ -134,12 +162,7 @@ public class RequestService {
 
         ItemEntity item = irepo.findById(request.getItemId())
                     .orElseThrow(() -> new RuntimeException("Item not found."));
-
-        if (item.getQuantity() < quantityToDeduct) {
-            throw new RuntimeException("Not enough quantity available.");
-        }
-
-        item.setQuantity(item.getQuantity() - quantityToDeduct);
+        
         item.setStatus("TO BE ASSIGNED");
         irepo.save(item);
     
